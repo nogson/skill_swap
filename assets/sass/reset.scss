@@ -1,0 +1,79 @@
+/* A Modern CSS Reset */
+
+*, *::before, *::after {
+  box-sizing: border-box
+}
+
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+  margin: 0
+}
+
+ul[role="list"], ol[role="list"] {
+  list-style: none
+}
+
+html {
+  scroll-behavior: smooth
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  color:$color-black;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+a:not([class]) {
+  text-decoration-skip-ink: auto
+}
+
+a:link,a:visited{
+  color: $color-secondly;
+  text-decoration: none;
+}
+
+img, picture {
+  max-width: 100%;
+  display: block
+}
+
+input, button, textarea, select {
+  font: inherit
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important
+  }
+}
+
+input,
+select{
+  border: 1px solid $color-gray-thin1;
+  padding: $size-xs $size-s;
+  border-radius: $size-xs;
+}
+
+select{
+  padding: $size-s;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body{
+  background: $color-primary-thin;
+}
+
+ul,ol {
+  list-style: none;
+  padding: 0;
+}

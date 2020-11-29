@@ -1,0 +1,109 @@
+
+// input
+
+
+// button
+.button-primary-fill {
+  background: $color-primary;
+  padding: $size-xs $size-m;
+  border-radius: 100px;
+  color: $color-black !important;
+  font-weight: bold;
+  border:1px solid $color-primary;
+}
+
+.button-black-line {
+  background: #FFF;
+  padding: $size-xs $size-m;
+  border-radius: 100px;
+  color: $color-black !important;
+  font-weight: bold;
+  border:1px solid $color-black;
+}
+
+.button-s {
+  font-size: $font-size-12;
+}
+
+.button-m {
+  font-size: $font-size-14;
+}
+
+.button-l {
+  font-size: $font-size-18;
+  padding: $size-s $size-l;
+}
+
+
+//box
+
+.main-content {
+  padding: $size-xl $size-xxl;
+  max-width: $max-content-size;
+  margin: 0 auto;
+}
+
+.box-content {
+  margin-bottom: $size-xxl;
+  padding: 0 $size-xxl;
+}
+
+.box-card{
+  background: #FFF;
+  border-radius: $size-s;
+  border:1px solid $color-gray-thin1;
+  padding: $size-m;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-row-gap: $size-xl;
+  grid-column-gap: $size-l;
+}
+
+.cards-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: $size-xl;
+  grid-column-gap: $size-l;
+}
+
+// margin
+.mb-s{
+  margin-bottom: $size-s;
+}
+
+.mb-m{
+  margin-bottom: $size-m;
+}
+
+.mb-l{
+  margin-bottom: $size-l;
+}
+
+.mt-s{
+  margin-top: $size-s;
+}
+
+.mt-m{
+  margin-top: $size-m;
+}
+
+.mt-l{
+  margin-top: $size-l;
+}
+
+.mt-xl{
+  margin-top: $size-xl;
+}
+
+// img
+
+.thumbnail-s{
+  border-radius: 100%;
+  width: $thumbnail-size-s;
+  height: $thumbnail-size-s;
+  border: 1px solid $color-gray-thin1;
+}
+
