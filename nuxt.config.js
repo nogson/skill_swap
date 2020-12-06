@@ -1,4 +1,7 @@
 export default {
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost'
+  },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'client',
@@ -14,11 +17,13 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    {src: '~/assets/sass/app.scss', lang: 'scss'},
+    {src: '~/assets/sass/app.scss', lang: 'scss'}
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+    '@/plugins/axios-accessor',
+    {src: '~/plugins/persistedstate.ts', ssr: false}
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -36,7 +41,7 @@ export default {
     '@nuxtjs/axios',
     'nuxt-webfontloader',
     '@nuxtjs/style-resources',
-    'nuxt-fontawesome',
+    'nuxt-fontawesome'
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -65,5 +70,8 @@ export default {
   },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-  }
+  },
+  transpileDependencies: [
+    'vuex-module-decorators'
+  ]
 }
