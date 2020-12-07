@@ -1,5 +1,6 @@
 import {VuexModule, Module, Mutation, Action} from 'vuex-module-decorators'
 import {$axios} from '@/utils/api'
+import {IUser} from '@/utils/interface/user'
 
 @Module({
     stateFactory: true,
@@ -8,7 +9,7 @@ import {$axios} from '@/utils/api'
 })
 export default class Auth extends VuexModule {
     private token!: string
-    private userData!: {}
+    private userData!: IUser
 
     @Mutation
     public setToken (token: string) {
@@ -16,8 +17,8 @@ export default class Auth extends VuexModule {
     }
 
     @Mutation
-    public setUserData (token: string) {
-        this.token = token
+    public setUserData (userData: IUser) {
+        this.userData = userData
     }
 
     public get getToken (): string {
@@ -29,7 +30,7 @@ export default class Auth extends VuexModule {
     }
 
     @Action
-    async login (params: { password: string, username: string }) {
+    async login (params: { password: string, username: string }):Promise<any> {
         const param = {
             grant_type: 'password',
             client_id: '2',
@@ -37,14 +38,23 @@ export default class Auth extends VuexModule {
             scope: ''
         }
 
-        const res = await $axios.$post('/oauth/token', Object.assign(param, params))
-        this.setToken(res.access_token)
+        try {
+            const res = await $axios.$post('/oauth/token', Object.assign(param, params))
+            this.setToken(res.access_token)
+            return Promise.resolve()
+        } catch (e) {
+
+        }
     }
 
     @Action
-    async requestUserData () {
-        const res = await $axios.$get('api/user')
-       // this.setUserData()
-        console.log(res)
+    async requestUserData ():Promise<any> {
+        try {
+            const res = await $axios.$get('api/user')
+            this.setUserData(res)
+            return res
+        } catch (error) {
+            return Promise.reject(error)
+        }
     }
 }

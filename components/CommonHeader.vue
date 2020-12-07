@@ -5,7 +5,13 @@
     </h1>
     <div v-if="!useSimple" class="header-items">
       <input class="header_search" type="text">
-      <div class="header-buttons">
+      <div v-if="userData" class="header-buttons is-login">
+        <nuxt-link to="/notification">
+          <font-awesome-icon :icon="['fas','bell']" class="icon" />
+        </nuxt-link>
+        <img class="thumbnail-xs" src="@/assets/images/dummy/user/user_1.png">
+      </div>
+      <div v-else class="header-buttons">
         <nuxt-link to="/login">
           ログイン
         </nuxt-link>
@@ -19,11 +25,17 @@
 
 <script lang="ts">
     import {Vue, Component, Prop} from 'nuxt-property-decorator'
+    import {IUser} from '@/utils/interface/user'
+    import {AuthStore} from '@/store'
 
     @Component
     export default class CommonHeader extends Vue {
         @Prop({default: false})
         useSimple: boolean
+
+        get userData ():IUser {
+            return AuthStore.getUserData
+        }
     }
 </script>
 
@@ -49,6 +61,13 @@
 
       > * {
         margin-left: $size-m;
+      }
+
+      &.is-login {
+        .icon {
+          color:$color-black;
+          font-size: $font-size-20;
+        }
       }
     }
 

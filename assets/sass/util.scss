@@ -3,16 +3,29 @@
 
 
 // button
+
+.button-base {
+  &:disabled {
+    opacity: 0.5;
+  }
+  .spinner {
+    margin-right: $size-s;
+  }
+}
+
 .button-primary-fill {
+  @extend .button-base;
   background: $color-primary;
   padding: $size-xs $size-m;
   border-radius: 100px;
   color: $color-black !important;
   font-weight: bold;
   border:1px solid $color-primary;
+
 }
 
 .button-black-line {
+  @extend .button-base;
   background: #FFF;
   padding: $size-xs $size-m;
   border-radius: 100px;
@@ -99,6 +112,12 @@
 }
 
 // img
+.thumbnail-xs{
+  border-radius: 100%;
+  width: $thumbnail-size-xs;
+  height: $thumbnail-size-xs;
+  border: 1px solid $color-gray-thin1;
+}
 
 .thumbnail-s{
   border-radius: 100%;

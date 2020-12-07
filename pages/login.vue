@@ -4,8 +4,8 @@
       <common-title>ログイン</common-title>
       <common-input-filed v-model="email" label="メールアドレス" />
       <common-input-filed v-model="password" label="パスワード" />
-      <button class="button-primary-fill button-l mt-l" @click="login">
-        ログイン
+      <button class="button-primary-fill button-l mt-l" :disabled="disabledButton" @click="login">
+        <font-awesome-icon v-if="isLoading" :icon="['fas','spinner']" spin class="spinner" />ログイン
       </button>
     </div>
   </div>
@@ -25,14 +25,24 @@
     export default class extends Vue {
         @Provide() email: string = ''
         @Provide() password: string = ''
+        @Provide() isLoading:boolean = false
 
         async login () {
+            this.isLoading = true
+
             await AuthStore.login({
                 password: this.password,
                 username: this.email
             })
 
             await AuthStore.requestUserData()
+
+            this.isLoading = false
+            this.$router.push('/')
+        }
+
+        get disabledButton () :boolean {
+            return this.isLoading || !this.password || !this.email
         }
     }
 </script>
@@ -54,4 +64,5 @@
     text-align: center;
     margin-top: -$header-h;
   }
+
 </style>
