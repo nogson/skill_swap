@@ -1,5 +1,4 @@
-export interface IUser {
-    'id':Number,
+export interface IProfile {
     'name':String,
     'email':String,
     'profile':String,
@@ -8,8 +7,5 @@ export interface IUser {
     'strong_description':String,
     'weak':String[],
     'weak_description':String,
-    'link':String,
-    'email_verified_at':Date,
-    'created_at':Date,
-    'updated_at':Date
+    'link':String
 }

@@ -13,7 +13,7 @@
 
 <script lang="ts">
     import {Vue, Component, Provide} from 'nuxt-property-decorator'
-    import {AuthStore} from '@/store'
+    import {AuthStore, UserStore} from '@/store'
     import CommonTitle from '@/components/CommonTitle.vue'
     import CommonInputFiled from '@/components/CommonInputFiled.vue'
 
@@ -30,12 +30,16 @@
         async login () {
             this.isLoading = true
 
-            await AuthStore.login({
-                password: this.password,
-                username: this.email
-            })
+            try {
+                await AuthStore.login({
+                    password: this.password,
+                    username: this.email
+                })
+            } catch (e) {
+              return
+            }
 
-            await AuthStore.requestUserData()
+            await UserStore.requestUserData()
 
             this.isLoading = false
             this.$router.push('/')

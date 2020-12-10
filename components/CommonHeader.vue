@@ -9,7 +9,19 @@
         <nuxt-link to="/notification">
           <font-awesome-icon :icon="['fas','bell']" class="icon" />
         </nuxt-link>
-        <img class="thumbnail-xs" src="@/assets/images/dummy/user/user_1.png">
+        <div class="my-navigation">
+          <img class="thumbnail-xs" src="@/assets/images/dummy/user/user_1.png" @click="showMyNavigation">
+          <nav v-if="displayNavigation" class="my-navigation-list">
+            <ul>
+              <li>
+                <nuxt-link to="/profile">
+                  プロフィール
+                </nuxt-link>
+              </li>
+              <li>ログアウト</li>
+            </ul>
+          </nav>
+        </div>
       </div>
       <div v-else class="header-buttons">
         <nuxt-link to="/login">
@@ -26,15 +38,22 @@
 <script lang="ts">
     import {Vue, Component, Prop} from 'nuxt-property-decorator'
     import {IUser} from '@/utils/interface/user'
-    import {AuthStore} from '@/store'
+    import {UserStore} from '@/store'
+
 
     @Component
     export default class CommonHeader extends Vue {
+        private displayNavigation:boolean = false
+
         @Prop({default: false})
         useSimple: boolean
 
-        get userData ():IUser {
-            return AuthStore.getUserData
+        showMyNavigation () {
+          this.displayNavigation = !this.displayNavigation
+        }
+
+        get userData (): IUser {
+            return UserStore.getUserData
         }
     }
 </script>
@@ -65,7 +84,7 @@
 
       &.is-login {
         .icon {
-          color:$color-black;
+          color: $color-black;
           font-size: $font-size-20;
         }
       }
@@ -74,5 +93,25 @@
     .header_search {
       margin-left: $size-m;
     }
+
+    .my-navigation {
+      position: relative;
+      .my-navigation-list {
+        width: 150px;
+        position: absolute;
+        right:-10px;
+        bottom:-100px;
+        z-index: 10;
+        background: rgba(#FFF,0.9);
+        padding: $size-m;
+        border-radius: $size-xs;
+        box-shadow: 1px 1px 2px 2px rgba($color-black,0.25);
+        li:not(:last-child){
+          margin-bottom: $size-s;
+          font-weight: bold;
+        }
+      }
+    }
+
   }
 </style>

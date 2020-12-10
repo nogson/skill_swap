@@ -1,10 +1,11 @@
-import {AuthStore} from '../store'
+import {AuthStore, UserStore} from '@/store'
 
-export default function ({store, redirect}) {
+//export default function ({store, redirect}) {
+export default function () {
     if (!AuthStore.getToken) {
-        //return redirect('/login')
+        // return redirect('/login')
         return
     }
 
-    return AuthStore.requestUserData()
+    return UserStore.requestUserData()
 }

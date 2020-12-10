@@ -1,6 +1,5 @@
 import {VuexModule, Module, Mutation, Action} from 'vuex-module-decorators'
 import {$axios} from '@/utils/api'
-import {IUser} from '@/utils/interface/user'
 
 @Module({
     stateFactory: true,
@@ -9,24 +8,14 @@ import {IUser} from '@/utils/interface/user'
 })
 export default class Auth extends VuexModule {
     private token!: string
-    private userData!: IUser
 
     @Mutation
     public setToken (token: string) {
         this.token = token
     }
 
-    @Mutation
-    public setUserData (userData: IUser) {
-        this.userData = userData
-    }
-
     public get getToken (): string {
         return this.token
-    }
-
-    public get getUserData (): any {
-        return this.userData
     }
 
     @Action
@@ -34,7 +23,7 @@ export default class Auth extends VuexModule {
         const param = {
             grant_type: 'password',
             client_id: '2',
-            client_secret: 'hDdQbSAX484FRtCQpHafotaMEfBv0ryuWCn7kvUN',
+            client_secret: 'mSOtmjvMb5bVo2E2AbXCLpegbGUCOPXQipwU7Xsx',
             scope: ''
         }
 
@@ -44,17 +33,6 @@ export default class Auth extends VuexModule {
             return Promise.resolve()
         } catch (e) {
 
-        }
-    }
-
-    @Action
-    async requestUserData ():Promise<any> {
-        try {
-            const res = await $axios.$get('api/user')
-            this.setUserData(res)
-            return res
-        } catch (error) {
-            return Promise.reject(error)
         }
     }
 }
