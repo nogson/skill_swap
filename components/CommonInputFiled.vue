@@ -31,7 +31,7 @@
     text-align: left;
   }
   input {
-    width: 300px;
+    width: 100%;
   }
 }
 </style>

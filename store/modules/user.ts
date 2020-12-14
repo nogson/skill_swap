@@ -13,7 +13,7 @@ export default class User extends VuexModule {
     private userData!: IUser
 
     public get getUserData (): any {
-        return this.userData
+        return JSON.parse(JSON.stringify(this.userData))
     }
 
     @Mutation
@@ -35,10 +35,7 @@ export default class User extends VuexModule {
     @Action
     async updateUserData (param:{id:number, params:IProfile}):Promise<any> {
         try {
-            const res = await $axios.$post(`api/user/${param.id}`, param.params)
-            this.setUserData(res.response)
-            // this.setUserData(res)
-            // return res
+            await $axios.$post(`api/user/${param.id}`, param.params)
         } catch (error) {
             return Promise.reject(error)
         }

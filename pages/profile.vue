@@ -10,18 +10,17 @@
           画像アップロード
         </button>
       </div>
-
       <common-input-filed v-model="profile.name" label="ユーザー名" />
       <common-input-filed v-model="profile.email" label="メールアドレス" />
       <common-input-filed v-model="profile.profile" label="プロフィール" />
       <common-input-filed v-model="profile.address" label="住所" />
-      <common-input-filed v-model="profile.strong" label="得意なこと" />
+      <combobox :values.sync="profile.strong" label="得意なこと" />
       <common-input-filed v-model="profile.strong_description" label="得意なことの補足" />
-      <common-input-filed v-model="profile.weak" label="学びたいこと" />
+      <combobox :values.sync="profile.weak" label="学びたいこと" />
       <common-input-filed v-model="profile.weak_description" label="学びたいことの補足" />
       <common-input-filed v-model="profile.link" label="関連リンク" />
 
-      <button class="button-primary-fill button-l mt-l" @click="updateUserProfile" :disabled="isEnabled">
+      <button class="button-primary-fill button-l mt-l" :disabled="isEnabled" @click="updateUserProfile">
         <font-awesome-icon v-if="isLoading" :icon="['fas','spinner']" spin class="spinner" />
         プロフィール登録
       </button>
@@ -35,16 +34,17 @@
     import {IProfile} from '@/utils/interface/profile'
     import CommonTitle from '@/components/CommonTitle.vue'
     import CommonInputFiled from '@/components/CommonInputFiled.vue'
+    import Combobox from '@/components/Combobox.vue'
 
     @Component({
-        components: {CommonInputFiled, CommonTitle},
+        components: {Combobox, CommonInputFiled, CommonTitle},
         layout: 'simpleBase',
         middleware: 'authenticated'
     })
 
     export default class extends Vue {
-        @Provide() private userId!:number
-        @Provide() private profile:IProfile = {
+        @Provide() private userId!: number
+        @Provide() private profile: IProfile = {
             name: '',
             email: '',
             profile: '',
@@ -56,19 +56,19 @@
             link: ''
         }
 
-        @Provide() private isLoading:boolean = false
+        @Provide() private isLoading: boolean = false
 
         created () {
             this.setProfileData()
         }
 
-        setProfileData ():void {
+        setProfileData (): void {
             this.profile.name = this.userData.name
             this.profile.email = this.userData.email
             this.profile.profile = this.userData.profile
-            this.profile.strong = this.userData.strong
+            this.profile.strong = this.userData.strong || []
             this.profile.strong_description = this.userData.strong_description
-            this.profile.weak = this.userData.weak
+            this.profile.weak = this.userData.weak || []
             this.profile.weak_description = this.userData.weak_description
             this.profile.link = this.userData.link
         }
@@ -83,14 +83,13 @@
             return UserStore.getUserData
         }
 
-        get isEnabled() {
+        get isEnabled () {
             return this.isLoading
         }
 
-
         @Watch('userData')
         onUserDataChange () {
-            this.setProfileData()
+          //  this.setProfileData()
         }
     }
 </script>
@@ -102,10 +101,11 @@
     justify-content: center;
     padding: $size-xl 0;
   }
+
   .login-box {
     background: #FFF;
     border-radius: $size-s;
-    border:1px solid $color-gray-thin1;
+    border: 1px solid $color-gray-thin1;
     padding: $size-xl;
     text-align: center;
   }
@@ -114,7 +114,7 @@
     margin-bottom: $size-l;
   }
 
-  .thumbnail-upload{
+  .thumbnail-upload {
     width: 100px;
     height: 100px;
     border-radius: 100%;
@@ -123,8 +123,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     .icon {
-      color:$color-gray-thin1;
+      color: $color-gray-thin1;
       font-size: $font-size-50;
     }
   }
