@@ -10,22 +10,23 @@ import {IProfile} from '@/utils/interface/profile'
 })
 
 export default class User extends VuexModule {
-    private userData!: IUser
+    private userData!: IUser | null
 
     public get getUserData (): any {
-        return JSON.parse(JSON.stringify(this.userData))
+        return this.userData ? JSON.parse(JSON.stringify(this.userData)) : null
     }
 
     @Mutation
-    public setUserData (userData: IUser) {
+    public setUserData (userData: IUser | null) {
         this.userData = userData
     }
+
 
     @Action
     async requestUserData ():Promise<any> {
         try {
             const res = await $axios.$get('api/user')
-            this.setUserData(res)
+            this.setUserData(res.response)
             return res
         } catch (error) {
             return Promise.reject(error)

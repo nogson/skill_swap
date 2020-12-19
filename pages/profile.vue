@@ -3,12 +3,15 @@
     <div class="login-box">
       <common-title>プロフィール</common-title>
       <div class="box-thumbnail-upload">
-        <div class="thumbnail-upload">
+        <img v-if="profile.thumbnail" :src="profile.thumbnail" class="thumbnail-upload">
+        <img v-else-if="selectedThumbnail" :src="selectedThumbnail" class="thumbnail-upload">
+        <div v-else class="thumbnail-upload">
           <font-awesome-icon :icon="['fas','user']" class="icon" />
         </div>
-        <button class="button-s button-black-line">
+        <label class="button-s button-black-line">
           画像アップロード
-        </button>
+          <input type="file" name="datafile" @change="onFileChange">
+        </label>
       </div>
       <common-input-filed v-model="profile.name" label="ユーザー名" />
       <common-input-filed v-model="profile.email" label="メールアドレス" />
@@ -29,69 +32,95 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Watch, Provide} from 'nuxt-property-decorator'
-    import {UserStore} from '@/store'
-    import {IProfile} from '@/utils/interface/profile'
-    import CommonTitle from '@/components/CommonTitle.vue'
-    import CommonInputFiled from '@/components/CommonInputFiled.vue'
-    import Combobox from '@/components/Combobox.vue'
+  import {Vue, Component, Watch, Provide} from 'nuxt-property-decorator'
+  import {UserStore} from '@/store'
+  import {IProfile} from '@/utils/interface/profile'
+  import CommonTitle from '@/components/CommonTitle.vue'
+  import CommonInputFiled from '@/components/CommonInputFiled.vue'
+  import Combobox from '@/components/Combobox.vue'
 
-    @Component({
-        components: {Combobox, CommonInputFiled, CommonTitle},
-        layout: 'simpleBase',
-        middleware: 'authenticated'
-    })
+  interface HTMLElementEvent<T extends HTMLElement> extends Event {
+    target: T
+  }
 
-    export default class extends Vue {
-        @Provide() private userId!: number
-        @Provide() private profile: IProfile = {
-            name: '',
-            email: '',
-            profile: '',
-            address: '',
-            strong: [],
-            strong_description: '',
-            weak: [],
-            weak_description: '',
-            link: ''
-        }
+  @Component({
+    components: {Combobox, CommonInputFiled, CommonTitle},
+    middleware: 'authenticated'
+  })
 
-        @Provide() private isLoading: boolean = false
-
-        created () {
-            this.setProfileData()
-        }
-
-        setProfileData (): void {
-            this.profile.name = this.userData.name
-            this.profile.email = this.userData.email
-            this.profile.profile = this.userData.profile
-            this.profile.strong = this.userData.strong || []
-            this.profile.strong_description = this.userData.strong_description
-            this.profile.weak = this.userData.weak || []
-            this.profile.weak_description = this.userData.weak_description
-            this.profile.link = this.userData.link
-        }
-
-        async updateUserProfile () {
-            this.isLoading = true
-            await UserStore.updateUserData({id: this.userData.id, params: this.profile})
-            this.isLoading = false
-        }
-
-        get userData () {
-            return UserStore.getUserData
-        }
-
-        get isEnabled () {
-            return this.isLoading
-        }
-
-        @Watch('userData')
-        onUserDataChange () {
-          //  this.setProfileData()
-        }
+  export default class extends Vue {
+    @Provide() private userId!: number
+    @Provide() private profile: IProfile = {
+      name: '',
+      email: '',
+      profile: '',
+      address: '',
+      strong: [],
+      strong_description: '',
+      weak: [],
+      weak_description: '',
+      link: '',
+      thumbnail: ''
     }
+
+    @Provide() private isLoading: boolean = false
+    @Provide() private selectedThumbnail: any = null
+
+    created () {
+      this.setProfileData()
+    }
+
+    setProfileData (): void {
+      this.profile.name = this.userData.name
+      this.profile.email = this.userData.email
+      this.profile.profile = this.userData.profile
+      this.profile.strong = this.userData.strong || []
+      this.profile.strong_description = this.userData.strong_description
+      this.profile.weak = this.userData.weak || []
+      this.profile.weak_description = this.userData.weak_description
+      this.profile.link = this.userData.link
+      this.profile.thumbnail = this.userData.thumbnail
+    }
+
+    onFileChange (e: HTMLElementEvent<HTMLInputElement>) {
+      const files = e.target.files
+      this.createImage(files[0])
+    }
+
+    createImage (file: any) {
+      const reader = new FileReader()
+
+      reader.onload = (e: any) => {
+        this.selectedThumbnail = e.target.result
+      }
+      reader.readAsDataURL(file)
+    }
+
+    async updateUserProfile () {
+      this.isLoading = true
+      const params = JSON.parse(JSON.stringify(this.profile))
+
+      if (this.selectedThumbnail) {
+        params.thumbnail = this.selectedThumbnail
+      }
+
+      await UserStore.updateUserData({id: this.userData.id, params: this.profile})
+      this.isLoading = false
+    }
+
+    get userData () {
+      return UserStore.getUserData
+    }
+
+    get isEnabled () {
+      return this.isLoading
+    }
+
+    @Watch('userData')
+    onUserDataChange () {
+      //  this.setProfileData()
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -100,9 +129,14 @@
     display: flex;
     justify-content: center;
     padding: $size-xl 0;
+
+    input[type="file"] {
+      display: none;
+    }
   }
 
   .login-box {
+    width: 600px;
     background: #FFF;
     border-radius: $size-s;
     border: 1px solid $color-gray-thin1;

@@ -63,6 +63,10 @@ select{
   padding: $size-s;
 }
 
+button {
+  cursor: pointer;
+}
+
 *,
 *::before,
 *::after {

@@ -7,10 +7,10 @@
       <input class="header_search" type="text">
       <div v-if="userData" class="header-buttons is-login">
         <nuxt-link to="/notification">
-          <font-awesome-icon :icon="['fas','bell']" class="icon" />
+          <font-awesome-icon :icon="['fas','bell']" class="icon"/>
         </nuxt-link>
         <div class="my-navigation">
-          <img class="thumbnail-xs" src="@/assets/images/dummy/user/user_1.png" @click="showMyNavigation">
+          <img class="my-navigation-thumbnail thumbnail-xs" src="@/assets/images/dummy/user/user_1.png" @click="showMyNavigation">
           <nav v-if="displayNavigation" class="my-navigation-list">
             <ul>
               <li>
@@ -18,7 +18,9 @@
                   プロフィール
                 </nuxt-link>
               </li>
-              <li>ログアウト</li>
+              <li @click="logout">
+                ログアウト
+              </li>
             </ul>
           </nav>
         </div>
@@ -36,26 +38,29 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Prop} from 'nuxt-property-decorator'
-    import {IUser} from '@/utils/interface/user'
-    import {UserStore} from '@/store'
+  import {Vue, Component, Prop} from 'nuxt-property-decorator'
+  import {IUser} from '@/utils/interface/user'
+  import {UserStore, AuthStore} from '@/store'
 
+  @Component
+  export default class CommonHeader extends Vue {
+    private displayNavigation: boolean = false
 
-    @Component
-    export default class CommonHeader extends Vue {
-        private displayNavigation:boolean = false
+    @Prop({default: false})
+    useSimple: boolean
 
-        @Prop({default: false})
-        useSimple: boolean
-
-        showMyNavigation () {
-          this.displayNavigation = !this.displayNavigation
-        }
-
-        get userData (): IUser {
-            return UserStore.getUserData
-        }
+    showMyNavigation() {
+      this.displayNavigation = !this.displayNavigation
     }
+
+    logout() {
+      AuthStore.logout()
+    }
+
+    get userData(): IUser {
+      return UserStore.getUserData
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -96,19 +101,32 @@
 
     .my-navigation {
       position: relative;
+
+      .my-navigation-thumbnail {
+        cursor: pointer;
+      }
+
       .my-navigation-list {
         width: 150px;
         position: absolute;
-        right:-10px;
-        bottom:-100px;
+        right: -10px;
+        bottom: -100px;
         z-index: 10;
-        background: rgba(#FFF,0.9);
+        background: rgba(#FFF, 0.9);
         padding: $size-m;
         border-radius: $size-xs;
-        box-shadow: 1px 1px 2px 2px rgba($color-black,0.25);
-        li:not(:last-child){
+        box-shadow: 1px 1px 2px 2px rgba($color-black, 0.25);
+
+        li {
+          cursor: pointer;
+
+          a {
+            color: $color-black;
+          }
+        }
+
+        li:not(:last-child) {
           margin-bottom: $size-s;
-          font-weight: bold;
         }
       }
     }
