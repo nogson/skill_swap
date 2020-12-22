@@ -104,7 +104,7 @@
         params.thumbnail = this.selectedThumbnail
       }
 
-      await UserStore.updateUserData({id: this.userData.id, params: this.profile})
+      await UserStore.updateUserData({id: this.userData.id, params})
       this.isLoading = false
     }
 
