@@ -3,7 +3,7 @@
     <div class="login-box">
       <common-title>プロフィール</common-title>
       <div class="box-thumbnail-upload">
-        <img v-if="profile.thumbnail" :src="profile.thumbnail" class="thumbnail-upload">
+        <img v-if="profile.thumbnail && !selectedThumbnail" :src="profile.thumbnail" class="thumbnail-upload">
         <img v-else-if="selectedThumbnail" :src="selectedThumbnail" class="thumbnail-upload">
         <div v-else class="thumbnail-upload">
           <font-awesome-icon :icon="['fas','user']" class="icon" />
@@ -83,7 +83,7 @@
     }
 
     onFileChange (e: HTMLElementEvent<HTMLInputElement>) {
-      const files = e.target.files
+      const files: any = e.target.files
       this.createImage(files[0])
     }
 
@@ -99,11 +99,7 @@
     async updateUserProfile () {
       this.isLoading = true
       const params = JSON.parse(JSON.stringify(this.profile))
-
-      if (this.selectedThumbnail) {
-        params.thumbnail = this.selectedThumbnail
-      }
-
+      params.thumbnail = this.selectedThumbnail
       await UserStore.updateUserData({id: this.userData.id, params})
       this.isLoading = false
     }

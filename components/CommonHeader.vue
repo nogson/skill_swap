@@ -1,7 +1,7 @@
 <template>
   <header id="header">
     <h1 class="logo">
-      Skill swap
+      <nuxt-link to="/">Skill swap</nuxt-link>
     </h1>
     <div v-if="!useSimple" class="header-items">
       <input class="header_search" type="text">
@@ -12,7 +12,7 @@
         <div class="my-navigation">
           <img class="my-navigation-thumbnail thumbnail-xs" src="@/assets/images/dummy/user/user_1.png" @click="showMyNavigation">
           <nav v-if="displayNavigation" class="my-navigation-list">
-            <ul>
+            <ul @click="showMyNavigation">
               <li>
                 <nuxt-link to="/profile">
                   プロフィール

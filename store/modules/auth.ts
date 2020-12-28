@@ -24,7 +24,7 @@ export default class Auth extends VuexModule {
         const param = {
             grant_type: 'password',
             client_id: '2',
-            client_secret: 'q7cQ0TcI8m2c6ea6qPvZGaK2exRmb0XOMtYyMfmZ',
+            client_secret: '1l1Z8h3Ea1DX78fcKg0Hi9ZGw2R6c9YqGtR2mfnO',
             scope: ''
         }
 
