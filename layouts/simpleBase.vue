@@ -2,6 +2,7 @@
   <section>
     <common-header :use-simple="true" />
     <Nuxt />
+    <notifications group="all" />
   </section>
 </template>
 <script lang="ts">

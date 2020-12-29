@@ -3,6 +3,7 @@
     <common-header />
     <Nuxt />
     <common-footer />
+    <notifications group="all" />
   </section>
 </template>
 <script>

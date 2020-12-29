@@ -33,7 +33,7 @@ export default class Auth extends VuexModule {
             this.setToken(res.access_token)
             return Promise.resolve()
         } catch (e) {
-
+            return Promise.reject(e)
         }
     }
 

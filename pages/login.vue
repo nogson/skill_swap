@@ -36,7 +36,14 @@
                     username: this.email
                 })
             } catch (e) {
-              return
+                this.isLoading = false
+                this.$notify({
+                    group: 'all',
+                    type: 'error',
+                    title: 'ログインに失敗しました',
+                    text: 'メールアドレス、パスワードをご確認ください。'
+                })
+                return
             }
 
             await UserStore.requestUserData()
