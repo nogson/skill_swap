@@ -31,7 +31,7 @@
         <nuxt-link to="/login">
           ログイン
         </nuxt-link>
-        <nuxt-link to="/login" class="button-primary-fill">
+        <nuxt-link to="/register" class="button-primary-fill">
           新規登録
         </nuxt-link>
       </div>

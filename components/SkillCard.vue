@@ -10,7 +10,7 @@
         </li>
       </ul>
       <p class="skill-card-length">
-        提供者10人
+        提供者{{users.length}}人
       </p>
       <div class="skill-card-footer">
         <button class="button-black-line button-s">
@@ -32,7 +32,7 @@
 
     @Component
     export default class SkillCard extends Vue {
-        @Provide() private users: IUser[]
+        @Provide() private users: IUser[] | null = null
         @Provide() private isLoading: boolean = true
 
         @Prop()
