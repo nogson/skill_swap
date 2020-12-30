@@ -21,10 +21,11 @@ export default class Auth extends VuexModule {
 
     @Action
     async login (params: { password: string, username: string }):Promise<any> {
+        console.log(process.env.PASSWORD_GRANT)
         const param = {
             grant_type: 'password',
             client_id: '2',
-            client_secret: '1l1Z8h3Ea1DX78fcKg0Hi9ZGw2R6c9YqGtR2mfnO',
+            client_secret: process.env.PASSWORD_GRANT,
             scope: ''
         }
 

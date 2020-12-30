@@ -10,6 +10,7 @@ export interface IUser {
     'weak_description':String,
     'link':String,
     'email_verified_at':Date,
+    'thumbnail':String,
     'created_at':Date,
     'updated_at':Date
 }

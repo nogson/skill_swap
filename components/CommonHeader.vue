@@ -1,16 +1,18 @@
 <template>
   <header id="header">
     <h1 class="logo">
-      <nuxt-link to="/">Skill swap</nuxt-link>
+      <nuxt-link to="/">
+        Skill swap
+      </nuxt-link>
     </h1>
     <div v-if="!useSimple" class="header-items">
       <input class="header_search" type="text">
       <div v-if="userData" class="header-buttons is-login">
         <nuxt-link to="/notification">
-          <font-awesome-icon :icon="['fas','bell']" class="icon"/>
+          <font-awesome-icon :icon="['fas','bell']" class="icon" />
         </nuxt-link>
         <div class="my-navigation">
-          <img class="my-navigation-thumbnail thumbnail-xs" src="@/assets/images/dummy/user/user_1.png" @click="showMyNavigation">
+          <img class="my-navigation-thumbnail thumbnail-xs" :src="thumbnail" @click="showMyNavigation">
           <nav v-if="displayNavigation" class="my-navigation-list">
             <ul @click="showMyNavigation">
               <li>
@@ -49,15 +51,19 @@
     @Prop({default: false})
     useSimple: boolean
 
-    showMyNavigation() {
+    showMyNavigation () {
       this.displayNavigation = !this.displayNavigation
     }
 
-    logout() {
+    logout () {
       AuthStore.logout()
     }
 
-    get userData(): IUser {
+    get thumbnail ():String {
+        return this.userData.thumbnail
+    }
+
+    get userData (): IUser {
       return UserStore.getUserData
     }
   }

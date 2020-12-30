@@ -1,3 +1,4 @@
+require('dotenv').config()
 
 export default {
   env: {
@@ -43,7 +44,8 @@ export default {
     '@nuxtjs/axios',
     'nuxt-webfontloader',
     '@nuxtjs/style-resources',
-    'nuxt-fontawesome'
+    'nuxt-fontawesome',
+    '@nuxtjs/dotenv'
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -71,8 +73,7 @@ export default {
     ]
   },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {
-  },
+  build: {},
   transpileDependencies: [
     'vuex-module-decorators'
   ]

@@ -2,7 +2,7 @@
 export let axios
 
 export default ({store, $axios}) => {
-    $axios.defaults.baseURL = 'https://api.hoge/'
+    //$axios.defaults.baseURL = 'https://api.hoge/'
 
     $axios.onRequest((config) => {
         const token:string = store.getters['modules/auth/getToken']

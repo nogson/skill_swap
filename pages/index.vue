@@ -16,10 +16,9 @@
         プログラミング
       </common-title>
       <div class="cards">
-        <skill-card />
-        <skill-card />
-        <skill-card />
-        <skill-card />
+        <div v-for="category in categories" :key="category.id">
+          <skill-card :category="category" />
+        </div>
       </div>
     </article>
   </div>
@@ -27,6 +26,7 @@
 
 <script lang="ts">
     import {Vue, Component} from 'nuxt-property-decorator'
+    import {CategoryStore} from '@/store'
     import CommonTitle from '~/components/CommonTitle.vue'
     import SkillCard from '~/components/SkillCard.vue'
 
@@ -39,7 +39,13 @@
     })
 
     export default class extends Vue {
+        async fetch () {
+            await CategoryStore.requestCategories()
+        }
 
+        get categories () {
+            return CategoryStore.getCategories
+        }
     }
 </script>
 
