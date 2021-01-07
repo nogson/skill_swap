@@ -35,6 +35,8 @@
                     password: this.password,
                     username: this.email
                 })
+              await UserStore.requestUserData()
+              this.$router.push('/')
             } catch (e) {
                 this.isLoading = false
                 this.$notify({
@@ -46,10 +48,8 @@
                 return
             }
 
-            await UserStore.requestUserData()
 
             this.isLoading = false
-            this.$router.push('/')
         }
 
         get disabledButton () :boolean {

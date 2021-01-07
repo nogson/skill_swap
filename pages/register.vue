@@ -37,25 +37,24 @@
       this.isLoading = true
 
       try {
-        await AuthStore.login({
+        await AuthStore.register({
+          name: this.name,
           password: this.password,
-          username: this.email
+          email: this.email
         })
+
+        await UserStore.requestUserData()
+        this.$router.push('/')
       } catch (e) {
-        this.isLoading = false
         this.$notify({
           group: 'all',
           type: 'error',
-          title: 'ログインに失敗しました',
+          title: 'ユーザー登録に失敗しました',
           text: 'メールアドレス、パスワードをご確認ください。'
         })
-        return
       }
 
-      await UserStore.requestUserData()
-
       this.isLoading = false
-      this.$router.push('/')
     }
 
     get disabledButton (): boolean {

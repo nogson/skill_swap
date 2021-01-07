@@ -13,14 +13,13 @@ export default class User extends VuexModule {
     private userData!: IUser | null
 
     public get getUserData (): any {
-        return this.userData ? JSON.parse(JSON.stringify(this.userData)) : null
+      return this.userData ? this.userData : null
     }
 
     @Mutation
     public setUserData (userData: IUser | null) {
         this.userData = userData
     }
-
 
     @Action
     async requestUserData ():Promise<any> {
