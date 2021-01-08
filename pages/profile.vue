@@ -17,6 +17,7 @@
       <common-input-filed v-model="profile.email" label="メールアドレス" />
       <common-input-filed v-model="profile.profile" label="プロフィール" />
       <common-input-filed v-model="profile.address" label="住所" />
+      <strong-category />
       <combobox :values.sync="profile.strong" label="得意なこと" />
       <common-input-filed v-model="profile.strong_description" label="得意なことの補足" />
       <combobox :values.sync="profile.weak" label="学びたいこと" />
@@ -38,13 +39,15 @@
   import CommonTitle from '@/components/CommonTitle.vue'
   import CommonInputFiled from '@/components/CommonInputFiled.vue'
   import Combobox from '@/components/Combobox.vue'
+  import SelectCombobox from '~/components/SelectCombobox.vue'
+  import StrongCategory from '~/components/StrongCategory.vue'
 
   interface HTMLElementEvent<T extends HTMLElement> extends Event {
     target: T
   }
 
   @Component({
-    components: {Combobox, CommonInputFiled, CommonTitle},
+    components: {StrongCategory, SelectCombobox, Combobox, CommonInputFiled, CommonTitle},
     middleware: 'authenticated'
   })
 
