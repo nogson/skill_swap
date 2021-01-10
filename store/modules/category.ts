@@ -8,8 +8,8 @@ import {ICategory} from '@/utils/interface/category'
     name: 'modules/category'
 })
 
-export default class User extends VuexModule {
-    private categories!: ICategory[] | null
+export default class Category extends VuexModule {
+    private categories: ICategory[] | null
 
     public get getCategories () {
         return this.categories

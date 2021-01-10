@@ -3,9 +3,9 @@ export interface IProfile {
   'email': String,
   'profile': String,
   'address': String,
-  'strong': String[],
+  'strong': Number[],
   'strong_description': String,
-  'weak': String[],
+  'weak': Number[],
   'weak_description': String,
   'link': String,
   'thumbnail': String

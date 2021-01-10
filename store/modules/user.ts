@@ -18,6 +18,7 @@ export default class User extends VuexModule {
 
     @Mutation
     public setUserData (userData: IUser | null) {
+        //console.log('setUserData',userData)
         this.userData = userData
     }
 

@@ -17,8 +17,7 @@
       <common-input-filed v-model="profile.email" label="メールアドレス" />
       <common-input-filed v-model="profile.profile" label="プロフィール" />
       <common-input-filed v-model="profile.address" label="住所" />
-      <strong-category />
-      <combobox :values.sync="profile.strong" label="得意なこと" />
+      <strong-category :values.sync="profile.strong" />
       <common-input-filed v-model="profile.strong_description" label="得意なことの補足" />
       <combobox :values.sync="profile.weak" label="学びたいこと" />
       <common-input-filed v-model="profile.weak_description" label="学びたいことの補足" />
@@ -33,93 +32,94 @@
 </template>
 
 <script lang="ts">
-  import {Vue, Component, Watch, Provide} from 'nuxt-property-decorator'
-  import {UserStore} from '@/store'
-  import {IProfile} from '@/utils/interface/profile'
-  import CommonTitle from '@/components/CommonTitle.vue'
-  import CommonInputFiled from '@/components/CommonInputFiled.vue'
-  import Combobox from '@/components/Combobox.vue'
-  import SelectCombobox from '~/components/SelectCombobox.vue'
-  import StrongCategory from '~/components/StrongCategory.vue'
+    import {Vue, Component, Watch, Provide} from 'nuxt-property-decorator'
+    import {UserStore} from '@/store'
+    import {IProfile} from '@/utils/interface/profile'
+    import CommonTitle from '@/components/CommonTitle.vue'
+    import CommonInputFiled from '@/components/CommonInputFiled.vue'
+    import Combobox from '@/components/Combobox.vue'
+    import SelectCombobox from '~/components/SelectCombobox.vue'
+    import StrongCategory from '~/components/StrongCategory.vue'
 
-  interface HTMLElementEvent<T extends HTMLElement> extends Event {
-    target: T
-  }
-
-  @Component({
-    components: {StrongCategory, SelectCombobox, Combobox, CommonInputFiled, CommonTitle},
-    middleware: 'authenticated'
-  })
-
-  export default class extends Vue {
-    @Provide() private userId!: number
-    @Provide() private profile: IProfile = {
-      name: '',
-      email: '',
-      profile: '',
-      address: '',
-      strong: [],
-      strong_description: '',
-      weak: [],
-      weak_description: '',
-      link: '',
-      thumbnail: ''
+    interface HTMLElementEvent<T extends HTMLElement> extends Event {
+        target: T
     }
 
-    @Provide() private isLoading: boolean = false
-    @Provide() private selectedThumbnail: any = null
+    @Component({
+        components: {StrongCategory, SelectCombobox, Combobox, CommonInputFiled, CommonTitle},
+        middleware: ['authenticated', 'common']
+    })
 
-    created () {
-      this.setProfileData()
+    export default class extends Vue {
+        @Provide() private userId!: number
+        @Provide() private profile: IProfile = {
+            name: '',
+            email: '',
+            profile: '',
+            address: '',
+            strong: [],
+            strong_description: '',
+            weak: [],
+            weak_description: '',
+            link: '',
+            thumbnail: ''
+        }
+
+        @Provide() private isLoading: boolean = false
+        @Provide() private selectedThumbnail: any = null
+
+        created () {
+            this.setProfileData()
+        }
+
+        setProfileData (): void {
+            const userData = JSON.parse(JSON.stringify(this.userData))
+            this.profile.name = userData.name
+            this.profile.email = userData.email
+            this.profile.profile = userData.profile
+            this.profile.strong = userData.strong || []
+            this.profile.strong_description = userData.strong_description
+            this.profile.weak = userData.weak || []
+            this.profile.weak_description = userData.weak_description
+            this.profile.link = userData.link
+            this.profile.thumbnail = userData.thumbnail
+        }
+
+        onFileChange (e: HTMLElementEvent<HTMLInputElement>) {
+            const files: any = e.target.files
+            this.createImage(files[0])
+        }
+
+        createImage (file: any) {
+            const reader = new FileReader()
+
+            reader.onload = (e: any) => {
+                this.selectedThumbnail = e.target.result
+            }
+            reader.readAsDataURL(file)
+        }
+
+        async updateUserProfile () {
+            this.isLoading = true
+            const params = JSON.parse(JSON.stringify(this.profile))
+            params.thumbnail = this.selectedThumbnail
+            await UserStore.updateUserData({id: this.userData.id, params})
+            this.isLoading = false
+        }
+
+        get userData () {
+            return UserStore.getUserData
+        }
+
+        get isEnabled () {
+            return this.isLoading
+        }
+
+        // @Watch('userData')
+        // onUserDataChange() {
+        //     //  this.setProfileData()
+        // }
     }
-
-    setProfileData (): void {
-      this.profile.name = this.userData.name
-      this.profile.email = this.userData.email
-      this.profile.profile = this.userData.profile
-      this.profile.strong = this.userData.strong || []
-      this.profile.strong_description = this.userData.strong_description
-      this.profile.weak = this.userData.weak || []
-      this.profile.weak_description = this.userData.weak_description
-      this.profile.link = this.userData.link
-      this.profile.thumbnail = this.userData.thumbnail
-    }
-
-    onFileChange (e: HTMLElementEvent<HTMLInputElement>) {
-      const files: any = e.target.files
-      this.createImage(files[0])
-    }
-
-    createImage (file: any) {
-      const reader = new FileReader()
-
-      reader.onload = (e: any) => {
-        this.selectedThumbnail = e.target.result
-      }
-      reader.readAsDataURL(file)
-    }
-
-    async updateUserProfile () {
-      this.isLoading = true
-      const params = JSON.parse(JSON.stringify(this.profile))
-      params.thumbnail = this.selectedThumbnail
-      await UserStore.updateUserData({id: this.userData.id, params})
-      this.isLoading = false
-    }
-
-    get userData () {
-      return UserStore.getUserData
-    }
-
-    get isEnabled () {
-      return this.isLoading
-    }
-
-    @Watch('userData')
-    onUserDataChange () {
-      //  this.setProfileData()
-    }
-  }
 </script>
 
 <style scoped lang="scss">

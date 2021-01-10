@@ -35,13 +35,13 @@
             SkillCard,
             CommonTitle
         },
-        middleware: 'authenticated'
+        middleware: ['authenticated', 'common']
     })
 
     export default class extends Vue {
-        async fetch () {
-            await CategoryStore.requestCategories()
-        }
+        // async fetch () {
+        //     await CategoryStore.requestCategories()
+        // }
 
         get categories () {
             return CategoryStore.getCategories

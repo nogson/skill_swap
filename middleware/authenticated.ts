@@ -1,11 +1,13 @@
 import {AuthStore, UserStore} from '@/store'
 
-//export default function ({store, redirect}) {
-export default function () {
-    if (!AuthStore.getToken) {
-        // return redirect('/login')
-        return
+// export default function ({store, redirect}) {
+export default async function () {
+    try {
+       // console.log('AuthStore.getToken',AuthStore.getToken)
+        if (AuthStore.getToken) {
+            await UserStore.requestUserData()
+        }
+    } catch (e) {
+        console.log(e)
     }
-
-    return UserStore.requestUserData()
 }
