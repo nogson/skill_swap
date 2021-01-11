@@ -17,9 +17,9 @@
       <common-input-filed v-model="profile.email" label="メールアドレス" />
       <common-input-filed v-model="profile.profile" label="プロフィール" />
       <common-input-filed v-model="profile.address" label="住所" />
-      <strong-category :values.sync="profile.strong" />
+      <category-select-box :values.sync="profile.strong" label="得意なこと" />
       <common-input-filed v-model="profile.strong_description" label="得意なことの補足" />
-      <combobox :values.sync="profile.weak" label="学びたいこと" />
+      <category-select-box :values.sync="profile.weak" label="学びたいこと" />
       <common-input-filed v-model="profile.weak_description" label="学びたいことの補足" />
       <common-input-filed v-model="profile.link" label="関連リンク" />
 
@@ -39,14 +39,14 @@
     import CommonInputFiled from '@/components/CommonInputFiled.vue'
     import Combobox from '@/components/Combobox.vue'
     import SelectCombobox from '~/components/SelectCombobox.vue'
-    import StrongCategory from '~/components/StrongCategory.vue'
+    import CategorySelectBox from "~/components/CategorySelectBox.vue"
 
     interface HTMLElementEvent<T extends HTMLElement> extends Event {
         target: T
     }
 
     @Component({
-        components: {StrongCategory, SelectCombobox, Combobox, CommonInputFiled, CommonTitle},
+        components: {CategorySelectBox, SelectCombobox, Combobox, CommonInputFiled, CommonTitle},
         middleware: ['authenticated', 'common']
     })
 

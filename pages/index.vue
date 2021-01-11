@@ -12,9 +12,15 @@
       <common-title klass="title-1">
         人気のスキル
       </common-title>
-      <common-title klass="title-3">
-        プログラミング
+      <common-title klass="title-1">
+        カテゴリ別
       </common-title>
+      <article v-for="(category,$index) in categories" :key="$index">
+        <common-title klass="title-3">
+          {{ category.name }}
+        </common-title>
+      </article>
+
       <div class="cards">
         <div v-for="category in categories" :key="category.id">
           <skill-card :category="category" />
