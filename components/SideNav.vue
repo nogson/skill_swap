@@ -1,28 +1,60 @@
 <template>
   <div class="side-nav">
-    <h4 class="side-nav-title">カテゴリ</h4>
+    <h4 class="side-nav-title">
+      カテゴリ
+    </h4>
     <nav>
-      <select class="selectbox">
-        <option value="1">プログラム</option>
+      <select v-model="selectedCategoryId" class="selectbox" @change="changeCategory">
+        <option v-for="category in categories" :key="category.id" :value="category.id">
+          {{ category.name }}
+        </option>
       </select>
       <ul class="side-nav-list">
-        <li>PHP</li>
-        <li>Laravel</li>
-        <li>GO</li>
-        <li>HTML・CSS</li>
-        <li>iOS</li>
+        <li v-for="skill in skills" :key="skill.id">
+          <nuxt-link :to="getSkillPath(skill.id)">
+            {{ skill.name }}
+          </nuxt-link>
+        </li>
       </ul>
     </nav>
   </div>
 </template>
 
 <script lang="ts">
-  import {Vue, Component, Prop} from 'nuxt-property-decorator'
-  import CommonTitle from "~/components/CommonTitle.vue";
+  import {Vue, Component, Prop, Provide} from 'nuxt-property-decorator'
+  import CommonTitle from '@/components/CommonTitle.vue'
+  import {ICategory} from '@/utils/interface/category'
+  import {SkillStore} from '@/store'
+
   @Component({
       components: {CommonTitle}
   })
   export default class SideNav extends Vue {
+    @Provide() private selectedCategoryId: Number = 1
+
+    @Prop()
+    selectedCategory:ICategory
+
+    @Prop()
+    categories:ICategory[]
+
+    created () {
+      this.selectedCategoryId = this.selectedCategory.id
+    }
+
+    getSkillPath (id:Number) :string {
+      return `/category/${this.selectedCategoryId}/skill/${id}`
+    }
+
+    changeCategory () {
+      this.$router.push(`/category/${this.selectedCategoryId}`)
+    }
+
+    get skills () {
+      if (SkillStore.getSkills) {
+        return SkillStore.getSkills.filter(d => d.category_id === this.selectedCategoryId)
+      }
+    }
   }
 </script>
 

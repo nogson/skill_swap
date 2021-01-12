@@ -21,9 +21,9 @@ export default class Category extends VuexModule {
     }
 
     @Action
-    async requestUserByCategory (categoryId:Number):Promise<any> {
+    async requestUserBySkill (categoryId:Number):Promise<any> {
         try {
-            const path = `api/category/${categoryId}/user`
+            const path = `api/category/${categoryId}/skill/users`
             const res = await $axios.$get(path)
             return res
         } catch (error) {
@@ -34,7 +34,7 @@ export default class Category extends VuexModule {
     @Action
     async requestCategories ():Promise<any> {
         try {
-            const res = await $axios.$get('api/categories')
+            const res = await $axios.$get('api/category')
             this.setCategories(res.response)
         } catch (error) {
             return Promise.reject(error)

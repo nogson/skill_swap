@@ -15,44 +15,48 @@
       <common-title klass="title-1">
         カテゴリ別
       </common-title>
-      <article v-for="(category,$index) in categories" :key="$index">
+      <article v-for="(category,$index) in categories" :key="$index" class="category-box">
         <common-title klass="title-3">
           {{ category.name }}
         </common-title>
+        <skill-card :category="category" />
+        <div class="category-box-more">
+          <nuxt-link class="text-link" :to="getCategoryListPath(category.id)">
+            もっと見る<font-awesome-icon :icon="['fa','angle-right']" class="ml-s" />
+          </nuxt-link>
+        </div>
       </article>
 
       <div class="cards">
-        <div v-for="category in categories" :key="category.id">
-          <skill-card :category="category" />
-        </div>
+        <div v-for="category in categories" :key="category.id" />
       </div>
     </article>
   </div>
 </template>
 
 <script lang="ts">
-    import {Vue, Component} from 'nuxt-property-decorator'
-    import {CategoryStore} from '@/store'
-    import CommonTitle from '~/components/CommonTitle.vue'
-    import SkillCard from '~/components/SkillCard.vue'
+  import {Vue, Component} from 'nuxt-property-decorator'
+  import {CategoryStore} from '@/store'
+  import CommonTitle from '~/components/CommonTitle.vue'
+  import SkillCard from '~/components/SkillCard.vue'
 
-    @Component({
-        components: {
-            SkillCard,
-            CommonTitle
-        },
-        middleware: ['authenticated', 'common']
-    })
+  @Component({
+    components: {
+      SkillCard,
+      CommonTitle
+    },
+    middleware: ['authenticated', 'common']
+  })
 
-    export default class extends Vue {
-        // async fetch () {
-        //     await CategoryStore.requestCategories()
-        // }
-
-        get categories () {
-            return CategoryStore.getCategories
-        }
+  export default class extends Vue {
+    get categories () {
+      return CategoryStore.getCategories
     }
+
+    getCategoryListPath (id:number):string {
+      return `/categories/${id}`
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -60,5 +64,8 @@
     height: 400px;
     background: $color-primary;
     margin-bottom: $size-xxl;
+  }
+  .category-box-more{
+    text-align: right;
   }
 </style>
