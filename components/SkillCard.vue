@@ -1,28 +1,35 @@
 <template>
-  <div v-if="skills" class="cards mb-m">
-    <div v-for="skill in skills" class="box-card">
-      <h3 class="skill-card-title">
-        {{ skill.name }}
-      </h3>
-      <div v-if="skill.users">
-        <ul class="thumbnails mb-s">
-          <li v-for="user in skill.users" :key="user.id">
-            <img class="thumbnail-s" :src="user.thumbnail">
-          </li>
-        </ul>
-        <p class="skill-card-length">
-          提供者{{ skill.users.length }}人
-        </p>
-        <div class="skill-card-footer">
-          <button class="button-black-line button-s">
-            詳しく見る
-          </button>
+  <div v-if="skills">
+    <div class="cards mb-m">
+      <div v-for="skill in skills" :key="skill.id" class="box-card">
+        <h3 class="skill-card-title">
+          {{ skill.name }}
+        </h3>
+        <div v-if="skill.users">
+          <ul class="thumbnails mb-s">
+            <li v-for="user in skill.users" :key="user.id">
+              <img class="thumbnail-s" :src="user.thumbnail">
+            </li>
+          </ul>
+          <p class="skill-card-length">
+            提供者{{ skill.users.length }}人
+          </p>
+          <div class="skill-card-footer">
+            <button class="button-black-line button-s">
+              詳しく見る
+            </button>
+          </div>
         </div>
       </div>
     </div>
+    <div class="category-box-more">
+      <nuxt-link class="text-link" :to="getSkillListPath()">
+        もっと見る<font-awesome-icon :icon="['fa','angle-right']" class="ml-s" />
+      </nuxt-link>
+    </div>
   </div>
   <div v-else class="spinner-box">
-    <font-awesome-icon v-if="isLoading" :icon="['fas','spinner']" spin class="spinner"/>
+    <font-awesome-icon v-if="isLoading" :icon="['fas','spinner']" spin class="spinner" />
   </div>
 </template>
 
@@ -34,19 +41,27 @@
 
   @Component
   export default class SkillCard extends Vue {
-    @Provide() private skills = null
+    @Provide() private skills:ISkill[] | null = null
     @Provide() private isLoading: boolean = true
 
     @Prop()
     category: ICategory
 
-    async created() {
+    async created () {
       const res = await CategoryStore.requestUserBySkill(this.category.id)
       const skills = res.response.sort((a: ISkill, b: ISkill) => a.users.length < b.users.length ? 1 : -1)
       this.skills = skills.splice(0, 3)
 
-
       this.isLoading = false
+    }
+
+    getSkillListPath (id?: Number): string {
+      let skillId = id
+      if (!skillId && this.skills) {
+        skillId = this.skills[0].id
+      }
+
+      return `/skill/${skillId}`
     }
   }
 </script>
@@ -83,5 +98,9 @@
     text-align: center;
     font-size: $font-size-20;
     padding: $size-l 0;
+  }
+
+  .category-box-more {
+    text-align: right;
   }
 </style>

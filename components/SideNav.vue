@@ -10,7 +10,7 @@
         </option>
       </select>
       <ul class="side-nav-list">
-        <li v-for="skill in skills" :key="skill.id">
+        <li v-for="skill in skills" :key="skill.id" :class="{act:actNav(skill.id)}">
           <nuxt-link :to="getSkillPath(skill.id)">
             {{ skill.name }}
           </nuxt-link>
@@ -25,6 +25,7 @@
   import CommonTitle from '@/components/CommonTitle.vue'
   import {ICategory} from '@/utils/interface/category'
   import {SkillStore} from '@/store'
+  import {ISkill} from '@/utils/interface/skill'
 
   @Component({
       components: {CommonTitle}
@@ -36,6 +37,9 @@
     selectedCategory:ICategory
 
     @Prop()
+    selectedSkill:ISkill
+
+    @Prop()
     categories:ICategory[]
 
     created () {
@@ -43,11 +47,17 @@
     }
 
     getSkillPath (id:Number) :string {
-      return `/category/${this.selectedCategoryId}/skill/${id}`
+      return `/skill/${id}`
     }
 
     changeCategory () {
-      this.$router.push(`/category/${this.selectedCategoryId}`)
+      if (this.skills) {
+        this.$router.push(`/skill/${this.skills[0].id}`)
+      }
+    }
+
+    actNav (id:Number) {
+      return id === this.selectedSkill.id
     }
 
     get skills () {
@@ -75,6 +85,11 @@
   .side-nav-list {
     >* {
       margin-bottom: $size-s;
+    }
+
+    .act{
+      pointer-events: none;
+      font-weight: bold;
     }
   }
 </style>

@@ -20,11 +20,6 @@
           {{ category.name }}
         </common-title>
         <skill-card :category="category" />
-        <div class="category-box-more">
-          <nuxt-link class="text-link" :to="getCategoryListPath(category.id)">
-            もっと見る<font-awesome-icon :icon="['fa','angle-right']" class="ml-s" />
-          </nuxt-link>
-        </div>
       </article>
 
       <div class="cards">
@@ -52,10 +47,6 @@
     get categories () {
       return CategoryStore.getCategories
     }
-
-    getCategoryListPath (id:number):string {
-      return `/categories/${id}`
-    }
   }
 </script>
 
@@ -64,8 +55,5 @@
     height: 400px;
     background: $color-primary;
     margin-bottom: $size-xxl;
-  }
-  .category-box-more{
-    text-align: right;
   }
 </style>

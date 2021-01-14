@@ -9,6 +9,9 @@
     <h2 v-if="klass === 'title-3'" :class="klass">
       <span><slot /></span>
     </h2>
+    <h2 v-if="klass === 'title-4'" :class="klass">
+      <span><slot /></span>
+    </h2>
   </div>
 </template>
 
@@ -43,6 +46,12 @@
 
   .title-3 {
     font-size: $font-size-18;
+    font-weight: bold;
+    margin-bottom: $size-m;
+  }
+
+  .title-4 {
+    font-size: $font-size-16;
     font-weight: bold;
     margin-bottom: $size-m;
   }
