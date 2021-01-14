@@ -48,7 +48,7 @@
     category: ICategory
 
     async created () {
-      const res = await CategoryStore.requestUserBySkill(this.category.id)
+      const res = await CategoryStore.requestUserByCategory(this.category.id)
       const skills = res.response.sort((a: ISkill, b: ISkill) => a.users.length < b.users.length ? 1 : -1)
       this.skills = skills.splice(0, 3)
 

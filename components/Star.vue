@@ -1,37 +1,34 @@
 <template>
   <div class="star">
-    <span>
-      <font-awesome-icon :icon="['far','star']" class="icon" />
+    <span v-for="(klass, $index) in starsClass" :key="$index">
+      <font-awesome-icon :icon="klass" class="icon" />
     </span>
-    <span>
-      <font-awesome-icon :icon="['far','star']" class="icon" />
-    </span>
-    <span>
-      <font-awesome-icon :icon="['far','star']" class="icon" />
-    </span>
-    <span>
-      <font-awesome-icon :icon="['far','star']" class="icon" />
-    </span>
-    <span>
-      <font-awesome-icon :icon="['far','star']" class="icon" />
-    </span>
-    <!--    <font-awesome-icon :icon="['fas','star-half']" class="icon" />-->
-    <!--    <font-awesome-icon :icon="['far','star']" class="icon" />-->
   </div>
 </template>
 
 <script lang="ts">
-  import {Vue, Component} from 'nuxt-property-decorator'
+  import {Vue, Component, Prop} from 'nuxt-property-decorator'
 
   @Component
-  export default class Start extends Vue {
+  export default class Star extends Vue {
+    @Prop()
+    value: Number
+
+    get starsClass () {
+      const arr = [['far', 'star'], ['far', 'star'], ['far', 'star'], ['far', 'star'], ['far', 'star']]
+      for (const v of [...Array(this.value).keys()]) {
+        arr[v] = ['fas', 'star']
+      }
+
+      return arr
+    }
   }
 </script>
 
 <style scoped lang="scss">
-.star {
-  .icon {
-    color: $color-primary;
+  .star {
+    .icon {
+      color: $color-primary;
+    }
   }
-}
 </style>

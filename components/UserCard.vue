@@ -1,34 +1,47 @@
 <template>
   <div class="user-card box-card">
     <div class="user-card-head">
-      <img class="thumbnail-s" src="~/assets/images/dummy/user/user_1.png">
+      <img class="thumbnail-s" :src="user.thumbnail">
       <div class="user-card-head-content">
-        <h3>ガパ男</h3>
-        <star />
+        <h3 class="user-card-head-content-name">
+          {{ user.name }}
+        </h3>
+        <star :value="user.star" />
       </div>
     </div>
     <div class="user-card-description">
       <p>
-        テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります...
+        {{ user.profile }}
       </p>
     </div>
     <dl class="user-card-info">
       <dt>得意なこと</dt>
-      <dd><span>グラフィックデザイン</span><span>Webデザイン</span></dd>
+      <dd>{{ user.strong_description }}</dd>
+      <dd class="mb-s">
+        <span v-for="strong in user.strong" :key="strong.id">{{ strong.name }}</span>
+      </dd>
     </dl>
     <dl class="user-card-info">
       <dt>学びたいコト</dt>
-      <dd><span>グラフィックデザイン</span><span>Webデザイン</span></dd>
+      <dd>{{ user.weak_description }}</dd>
+      <dd class="mb-s">
+        <span v-for="weak in user.weak" :key="weak.id">{{ weak.name }}</span>
+      </dd>
     </dl>
   </div>
 </template>
 
-<script>
-  import Star from './Star'
+<script lang="ts">
+  import {Vue, Component, Prop, Provide} from 'nuxt-property-decorator'
+  import Star from '~/components/Star.vue'
+  import {IUser} from '~/utils/interface/user'
 
-  export default {
-    name: 'UserCard',
+  @Component({
     components: {Star}
+  })
+  export default class UserCard extends Vue {
+    @Prop()
+    user: IUser
   }
 </script>
 
@@ -42,6 +55,11 @@
   .user-card-head-content {
     flex-grow: 1;
     margin-left: $size-m;
+    .user-card-head-content-name {
+      word-break: break-all;
+      line-height: 1.2;
+      margin-bottom: $size-xs;
+    }
   }
 
   .user-card-description {

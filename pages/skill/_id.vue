@@ -9,20 +9,19 @@
         {{ selectedSkill.name }}
       </common-title>
       <div class="cards-2col">
-        <user-card />
-        <user-card />
-        <user-card />
+        <user-card v-for="user in users" :user="user" :key="user.id"/>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import {Vue, Component} from 'nuxt-property-decorator'
+  import {Vue, Component, Provide} from 'nuxt-property-decorator'
   import {CategoryStore, SkillStore} from '@/store'
   import CommonTitle from '~/components/CommonTitle.vue'
   import SideNav from '~/components/SideNav.vue'
   import UserCard from '~/components/UserCard.vue'
+  import {IUser} from '~/utils/interface/user'
 
   @Component({
     components: {UserCard, SideNav, CommonTitle},
@@ -30,6 +29,13 @@
   })
 
   export default class extends Vue {
+    @Provide() private users: IUser [] = []
+
+    async created () {
+      const res = await CategoryStore.requestUserBySkill(Number(this.$route.params.id))
+      this.users = res.response
+    }
+
     get categories () {
       return CategoryStore.getCategories
     }

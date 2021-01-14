@@ -21,15 +21,26 @@ export default class Category extends VuexModule {
     }
 
     @Action
-    async requestUserBySkill (categoryId:Number):Promise<any> {
+    async requestUserByCategory (categoryId:Number):Promise<any> {
         try {
-            const path = `api/category/${categoryId}/skill/users`
+            const path = `api/category/${categoryId}/users`
             const res = await $axios.$get(path)
             return res
         } catch (error) {
             return Promise.reject(error)
         }
     }
+
+  @Action
+  async requestUserBySkill (skillId:Number):Promise<any> {
+    try {
+      const path = `api/skill/${skillId}/users`
+      const res = await $axios.$get(path)
+      return res
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 
     @Action
     async requestCategories ():Promise<any> {
