@@ -174,6 +174,13 @@
   border: 1px solid $color-gray-thin1;
 }
 
+.thumbnail-l{
+  border-radius: 100%;
+  width: $thumbnail-size-l;
+  height: $thumbnail-size-l;
+  border: 1px solid $color-gray-thin1;
+}
+
 // text
 .text-alg-right{
   text-align: right;

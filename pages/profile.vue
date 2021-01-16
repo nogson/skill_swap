@@ -108,7 +108,7 @@
         }
 
         get userData () {
-            return UserStore.getUserData
+            return UserStore.getLoginUserData
         }
 
         get isEnabled () {

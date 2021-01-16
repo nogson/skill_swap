@@ -35,7 +35,7 @@
                     password: this.password,
                     username: this.email
                 })
-              await UserStore.requestUserData()
+              await UserStore.requestLoginUserData()
               this.$router.push('/')
             } catch (e) {
                 this.isLoading = false

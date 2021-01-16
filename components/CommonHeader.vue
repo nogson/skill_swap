@@ -64,7 +64,7 @@
     }
 
     get userData (): IUser {
-      return UserStore.getUserData
+      return UserStore.getLoginUserData
     }
   }
 </script>

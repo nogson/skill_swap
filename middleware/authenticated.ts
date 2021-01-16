@@ -5,7 +5,7 @@ export default async function () {
     try {
        // console.log('AuthStore.getToken',AuthStore.getToken)
         if (AuthStore.getToken) {
-            await UserStore.requestUserData()
+            await UserStore.requestLoginUserData()
         }
     } catch (e) {
         console.log(e)

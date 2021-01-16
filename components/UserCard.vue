@@ -3,9 +3,11 @@
     <div class="user-card-head">
       <img class="thumbnail-s" :src="user.thumbnail">
       <div class="user-card-head-content">
-        <h3 class="user-card-head-content-name">
-          {{ user.name }}
-        </h3>
+        <nuxt-link :to="userDetailPath">
+          <h3 class="user-card-head-content-name">
+            {{ user.name }}
+          </h3>
+        </nuxt-link>
         <star :value="user.star" />
       </div>
     </div>
@@ -42,6 +44,10 @@
   export default class UserCard extends Vue {
     @Prop()
     user: IUser
+
+    get userDetailPath ():string {
+      return `/user/${this.user.id}`
+    }
   }
 </script>
 

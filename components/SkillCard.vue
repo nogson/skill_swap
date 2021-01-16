@@ -15,9 +15,9 @@
             提供者{{ skill.users.length }}人
           </p>
           <div class="skill-card-footer">
-            <button class="button-black-line button-s">
+            <nuxt-link class="button-black-line button-s" :to="getSkillListPath(skill.id)">
               詳しく見る
-            </button>
+            </nuxt-link>
           </div>
         </div>
       </div>
