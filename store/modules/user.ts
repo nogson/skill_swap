@@ -24,7 +24,7 @@ export default class User extends VuexModule {
   @Action
   async requestLoginUserData (): Promise<any> {
     try {
-      const res = await $axios.$get('api/user')
+      const res = await $axios.$get('api/loginUser')
       this.setUserData(res.response)
       return res
     } catch (error) {
@@ -46,6 +46,16 @@ export default class User extends VuexModule {
   async updateUserData (param: { id: number, params: IProfile }): Promise<any> {
     try {
       await $axios.$post(`api/user/${param.id}`, param.params)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  @Action
+  async requestUserDataBySkill (ids: number[]): Promise<any> {
+    try {
+      const res = await $axios.$post('api/skills/users', ids)
+      return res
     } catch (error) {
       return Promise.reject(error)
     }

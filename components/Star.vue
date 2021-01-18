@@ -15,9 +15,9 @@
     value: Number
 
     get starsClass () {
-      const arr = [['far', 'star'], ['far', 'star'], ['far', 'star'], ['far', 'star'], ['far', 'star']]
+      const arr = [['far', 'heart'], ['far', 'heart'], ['far', 'heart'], ['far', 'heart'], ['far', 'heart']]
       for (const v of [...Array(this.value).keys()]) {
-        arr[v] = ['fas', 'star']
+        arr[v] = ['fas', 'heart']
       }
 
       return arr
@@ -27,6 +27,9 @@
 
 <style scoped lang="scss">
   .star {
+    span {
+      margin-right: $size-xs;
+    }
     .icon {
       color: $color-primary;
     }

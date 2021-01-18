@@ -20,21 +20,21 @@
       <dt>得意なこと</dt>
       <dd>{{ user.strong_description }}</dd>
       <dd class="mb-s">
-        <span v-for="strong in user.strong" :key="strong.id">{{ strong.name }}</span>
+        <span class="tag-normal" v-for="strong in user.strong" :key="strong.id">{{ strong.name }}</span>
       </dd>
     </dl>
     <dl class="user-card-info">
       <dt>学びたいコト</dt>
       <dd>{{ user.weak_description }}</dd>
       <dd class="mb-s">
-        <span v-for="weak in user.weak" :key="weak.id">{{ weak.name }}</span>
+        <span class="tag-normal" v-for="weak in user.weak" :key="weak.id">{{ weak.name }}</span>
       </dd>
     </dl>
   </div>
 </template>
 
 <script lang="ts">
-  import {Vue, Component, Prop, Provide} from 'nuxt-property-decorator'
+  import {Vue, Component, Prop} from 'nuxt-property-decorator'
   import Star from '~/components/Star.vue'
   import {IUser} from '~/utils/interface/user'
 
@@ -69,7 +69,6 @@
   }
 
   .user-card-description {
-    font-size: $font-size-12;
     overflow: hidden;
     width: 100%;
     p {
@@ -80,7 +79,6 @@
   }
 
   .user-card-info {
-    font-size: $font-size-12;
     margin-top: $size-m;
     dt {
       font-weight: bold;
@@ -88,12 +86,6 @@
     dd {
       display: flex;
       flex-wrap: wrap;
-      font-size: $font-size-10;
-      span {
-        background: $color-gray;
-        margin: $size-s $size-s 0 0;
-        padding: $size-xs $size-s;
-      }
     }
   }
 </style>

@@ -1,0 +1,74 @@
+<template>
+  <div class="message-dialog">
+    <div class="message-dialog-box">
+      <common-title klass="title-3">
+        メッセージの送信先 : {{user.name}}
+      </common-title>
+      <textarea class="message-dialog-textarea" rows="5" />
+      <div class="message-dialog-footer">
+        <button class="button-black-text" @click="cancel">
+          キャンセル
+        </button>
+        <button class="button-primary-fill" @click="send">
+          送信
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+    import {Vue, Component, Prop} from 'nuxt-property-decorator'
+    import CommonTitle from '~/components/CommonTitle.vue'
+    import {IUser} from '~/utils/interface/user'
+
+    @Component({
+        components: {CommonTitle}
+    })
+    export default class MessageDialog extends Vue {
+        @Prop()
+        user:IUser
+
+        send() {
+
+        }
+
+        cancel() {
+
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+  .message-dialog {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(#000, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .message-dialog-box {
+      background: #FFF;
+      width: 600px;
+      border-radius: $size-s;
+      padding: $size-l;
+    }
+
+    .message-dialog-textarea {
+      border-color: $color-gray-thin1;
+      width: 100%;
+    }
+
+    .message-dialog-footer {
+      text-align: right;
+      margin-top: $size-l;
+      button {
+        width: 150px;
+      }
+    }
+  }
+</style>

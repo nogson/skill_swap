@@ -16,7 +16,7 @@
 .button-primary-fill {
   @extend .button-base;
   background: $color-primary;
-  padding: $size-xs $size-m;
+  padding: $size-s $size-m;
   border-radius: 100px;
   color: $color-black !important;
   font-weight: bold;
@@ -32,6 +32,16 @@
   color: $color-black !important;
   font-weight: bold;
   border:1px solid $color-black;
+}
+
+.button-black-text {
+  @extend .button-base;
+  background: #FFF;
+  padding: $size-xs $size-m;
+  border-radius: 100px;
+  color: $color-black !important;
+  font-weight: bold;
+  border: none;
 }
 
 .button-s {
@@ -53,6 +63,7 @@
 .main-content {
   padding: $size-xl $size-xxl;
   max-width: $max-content-size;
+  min-height: calc(100vh - 72px);
   margin: 0 auto;
 }
 
@@ -174,10 +185,10 @@
   border: 1px solid $color-gray-thin1;
 }
 
-.thumbnail-l{
+.thumbnail-auto{
   border-radius: 100%;
-  width: $thumbnail-size-l;
-  height: $thumbnail-size-l;
+  width: 100%;
+  height: auto;
   border: 1px solid $color-gray-thin1;
 }
 
@@ -191,4 +202,14 @@
 
 .text-link {
   font-weight: bold;
+}
+
+// other
+/// tag
+
+.tag-normal {
+  background: $color-gray;
+  margin: $size-s $size-s 0 0;
+  padding: $size-xs $size-s;
+  font-size: $size-s;
 }
