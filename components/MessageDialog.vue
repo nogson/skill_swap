@@ -1,24 +1,26 @@
 <template>
-  <div class="message-dialog">
-    <div class="message-dialog-box">
-      <common-title klass="title-3">
-        メッセージの送信先 : {{user.name}}
-      </common-title>
-      <textarea class="message-dialog-textarea" rows="5" />
-      <div class="message-dialog-footer">
-        <button class="button-black-text" @click="cancel">
-          キャンセル
-        </button>
-        <button class="button-primary-fill" @click="send">
-          送信
-        </button>
+  <transition>
+    <div v-if="dialogFlag" class="message-dialog">
+      <div class="message-dialog-box">
+        <common-title klass="title-3">
+          メッセージの送信先 : {{ user.name }}
+        </common-title>
+        <textarea class="message-dialog-textarea" rows="5" />
+        <div class="message-dialog-footer">
+          <button class="button-black-text" @click="cancel">
+            キャンセル
+          </button>
+          <button class="button-primary-fill" @click="send">
+            送信
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Prop} from 'nuxt-property-decorator'
+    import {Vue, Component, Prop, PropSync} from 'nuxt-property-decorator'
     import CommonTitle from '~/components/CommonTitle.vue'
     import {IUser} from '~/utils/interface/user'
 
@@ -27,14 +29,17 @@
     })
     export default class MessageDialog extends Vue {
         @Prop()
-        user:IUser
+        user: IUser
 
-        send() {
+        @PropSync('enabledDialog', {type: Boolean})
+        dialogFlag:boolean
 
+        send () {
+            this.dialogFlag = false
         }
 
-        cancel() {
-
+        cancel () {
+          this.dialogFlag = false
         }
     }
 </script>
@@ -66,9 +71,17 @@
     .message-dialog-footer {
       text-align: right;
       margin-top: $size-l;
+
       button {
         width: 150px;
       }
     }
+  }
+  .v-enter-active, .v-leave-active {
+    transition: opacity .5s
+  }
+
+  .v-enter, .v-leave-to {
+    opacity: 0
   }
 </style>

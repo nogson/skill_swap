@@ -8,7 +8,8 @@
           >
             <img class="thumbnail-auto mb-m" :src="user.thumbnail">
             <p class="user-detail-box-sub-address">
-              <font-awesome-icon :icon="['fas','map-marker']" class="icon" />{{ user.address }}
+              <font-awesome-icon :icon="['fas','map-marker']" class="icon" />
+              {{ user.address }}
             </p>
             <star :value="user.star" />
             <button class="button-primary-fill button-m mt-l button-send-message" @click="sendMessage">
@@ -63,7 +64,7 @@
         情報がありません
       </p>
     </div>
-    <message-dialog :user="user"/>
+    <message-dialog :enabled-dialog.sync="enabledMassageDialog" :user="user" />
   </div>
   <div v-else class="main-content loading">
     <font-awesome-icon v-if="isLoading" :icon="['fas','spinner']" spin class="spinner" />
@@ -72,13 +73,12 @@
 
 <script lang="ts">
     import {Vue, Component, Provide} from 'nuxt-property-decorator'
-    import {UserStore, SkillStore} from '@/store'
+    import {UserStore} from '@/store'
     import Star from '~/components/Star.vue'
     import {IUser} from '~/utils/interface/user'
-    import {ISkill} from '~/utils/interface/skill'
     import CommonTitle from '~/components/CommonTitle.vue'
     import UserCard from '~/components/UserCard.vue'
-    import MessageDialog from "~/components/MessageDialog.vue";
+    import MessageDialog from '~/components/MessageDialog.vue'
 
     @Component({
         components: {MessageDialog, UserCard, CommonTitle, Star},
@@ -89,25 +89,28 @@
         @Provide() private user: IUser | null = null
         @Provide() private relatedUsers: IUser[] | null = null
         @Provide() private isLoading: boolean = true
+        @Provide() private enabledMassageDialog: boolean = false
 
         async created () {
             const userId = Number(this.$route.params.id)
             const userRes = await UserStore.requestUserData(userId)
             this.user = userRes.response
-            if (!this.user) { return }
-            const ids:number[] = this.user.strong.map(d => d.id)
+            if (!this.user) {
+                return
+            }
+            const ids: number[] = this.user.strong.map(d => d.id)
 
             const skillUserRes = await UserStore.requestUserDataBySkill({ids})
-            this.relatedUsers = skillUserRes.response.filter((d:IUser) => ![UserStore.getLoginUserData.id, userId].includes(d.id))
+            this.relatedUsers = skillUserRes.response.filter((d: IUser) => ![UserStore.getLoginUserData.id, userId].includes(d.id))
             this.isLoading = false
         }
 
         sendMessage () {
-
+            this.enabledMassageDialog = true
         }
 
-        get noRelatedUsers ():boolean {
-          return !this.isLoading && (!this.relatedUsers || this.relatedUsers.length === 0)
+        get noRelatedUsers (): boolean {
+            return !this.isLoading && (!this.relatedUsers || this.relatedUsers.length === 0)
         }
     }
 </script>
@@ -126,9 +129,11 @@
 
   .user-detail-box-main {
     display: flex;
-    .user-detail-box-detail{
+
+    .user-detail-box-detail {
       flex-grow: 1;
     }
+
     .user-detail-box-sub {
       margin-right: $size-xl;
       min-width: 160px;
@@ -144,21 +149,24 @@
         width: 100%;
         display: block;
         text-align: center;
+
         .icon {
           margin-right: $size-s;
         }
       }
     }
 
-    .user-detail-box-detail-info{
+    .user-detail-box-detail-info {
       display: flex;
       margin-bottom: $size-m;
-      dt{
+
+      dt {
         width: 100px;
         font-weight: bold;
         margin-right: $size-l;
         flex-shrink: 0;
       }
+
       dd {
       }
     }
