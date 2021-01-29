@@ -101,7 +101,11 @@
             const ids: number[] = this.user.strong.map(d => d.id)
 
             const skillUserRes = await UserStore.requestUserDataBySkill({ids})
+          if (UserStore.getLoginUserData) {
             this.relatedUsers = skillUserRes.response.filter((d: IUser) => ![UserStore.getLoginUserData.id, userId].includes(d.id))
+          } else {
+            this.relatedUsers = skillUserRes.response.filter((d: IUser) => ![userId].includes(d.id))
+          }
             this.isLoading = false
         }
 
