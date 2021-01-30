@@ -185,6 +185,12 @@
   border: 1px solid $color-gray-thin1;
 }
 
+.thumbnail-xs{
+  @extend .thumbnail-s;
+  width: $thumbnail-size-xs;
+  height: $thumbnail-size-xs;
+}
+
 .thumbnail-auto{
   border-radius: 100%;
   width: 100%;

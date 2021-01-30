@@ -5,12 +5,13 @@
         <common-title klass="title-3">
           メッセージの送信先 : {{ user.name }}
         </common-title>
-        <textarea class="message-dialog-textarea" rows="5" />
+        <textarea v-model="message" class="message-dialog-textarea" rows="5" />
         <div class="message-dialog-footer">
           <button class="button-black-text" @click="cancel">
             キャンセル
           </button>
           <button class="button-primary-fill" @click="send">
+            <font-awesome-icon v-if="isLoading" :icon="['fas','spinner']" spin class="spinner" />
             送信
           </button>
         </div>
@@ -20,7 +21,8 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Prop, PropSync} from 'nuxt-property-decorator'
+    import {Vue, Component, Prop, PropSync, Provide} from 'nuxt-property-decorator'
+    import {NotificationStore} from '@/store'
     import CommonTitle from '~/components/CommonTitle.vue'
     import {IUser} from '~/utils/interface/user'
 
@@ -28,18 +30,24 @@
         components: {CommonTitle}
     })
     export default class MessageDialog extends Vue {
+        @Provide() private message: string
+        @Provide() private isLoading: boolean = false
+
         @Prop()
         user: IUser
 
         @PropSync('enabledDialog', {type: Boolean})
-        dialogFlag:boolean
+        dialogFlag: boolean
 
-        send () {
+        async send () {
+            this.isLoading = true
+            await NotificationStore.sendMessage({message: this.message, receiver_id: this.user.id})
+            this.isLoading = false
             this.dialogFlag = false
         }
 
         cancel () {
-          this.dialogFlag = false
+            this.dialogFlag = false
         }
     }
 </script>
@@ -77,6 +85,7 @@
       }
     }
   }
+
   .v-enter-active, .v-leave-active {
     transition: opacity .5s
   }

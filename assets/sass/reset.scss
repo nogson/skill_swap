@@ -67,6 +67,10 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: auto;
+}
+
 *,
 *::before,
 *::after {
