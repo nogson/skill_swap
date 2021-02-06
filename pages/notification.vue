@@ -7,30 +7,50 @@
           <span class="title">受信ボックス</span>
         </div>
         <ul>
-          <li v-for="user in users" :key="user.id" class="side-nav-li" @click="selectUser(user.id)">
+          <li
+            v-for="user in users"
+            :key="user.id"
+            class="side-nav-li"
+            :class="{'is-active':user.id === selectedUser.id}"
+            @click="selectUser(user.id)"
+          >
             <img class="thumbnail-xs" :src="user.thumbnail">
             <span class="side-nav-li-name">{{ user.name }}</span>
           </li>
         </ul>
       </nav>
-      <div class="notification-box-content">
-        <article>
-          <div class="message-date">
-            2020 10/10
+      <article v-if="isLoading" class="spinner-box">
+        <font-awesome-icon :icon="['fas','spinner']" spin class="spinner" />
+      </article>
+      <div v-else-if="hasUser" class="notification-box-content">
+        <article v-if="!isLoading" class="notification-box-content-scroll-box">
+          <div v-for="(messageGroup,$index) in messageGroups" :key="$index" class="message-group">
+            <div class="message-date">
+              {{ messageGroup.date }}
+            </div>
+            <dl
+              v-for="message in messageGroup.messages"
+              :key="message.id"
+              class="message"
+              :class="{'is-self':message.is_self}"
+            >
+              <dt v-if="!message.is_self">
+                <img class="thumbnail-xs" :src="selectedUser.thumbnail">
+              </dt>
+              <dd>{{ message.message }}</dd>
+            </dl>
           </div>
-          <dl v-for="message in messages" :key="message.id" class="message">
-            <dt>
-              <img class="thumbnail-s" src="../assets/images/dummy/user/user_1.png">
-            </dt>
-            <dd>テキストが入りますテキストが入りますテキストが入りますテキストが入りますテキストが入りますテキストが入りますテキストが入りますテキストが入ります</dd>
-          </dl>
         </article>
         <div class="message-textarea">
           <textarea v-model="message" rows="4" />
           <button class="button-primary-fill" :disabled="disabledSendBtn" @click="send">
+            <font-awesome-icon v-if="isSending" :icon="['fas','spinner']" spin class="spinner" />
             送信
           </button>
         </div>
+      </div>
+      <div v-else class="no-messages">
+        メッセージがありません
       </div>
     </div>
   </div>
@@ -40,7 +60,7 @@
     import {Vue, Component, Provide} from 'nuxt-property-decorator'
     import {NotificationStore} from '@/store'
     import {IUser} from '@/utils/interface/user'
-    import {IMessage} from '@/utils/interface/notification'
+    import {IMessageGroup} from '@/utils/interface/notification'
     import CommonTitle from '~/components/CommonTitle.vue'
 
     @Component({
@@ -49,46 +69,60 @@
     })
     export default class extends Vue {
         @Provide() private message: string = ''
-        @Provide() private isLoading: boolean = false
+        @Provide() private isLoading: boolean = true
+        @Provide() private isSending: boolean = false
         @Provide() private users: IUser[] = []
-        @Provide() private messages: IMessage[] = []
+        @Provide() private messageGroups: IMessageGroup[] = []
+        @Provide() private selectedUser: IUser | null = null
 
-        async created () {
+        async mounted () {
             const res = await NotificationStore.getUsers()
             this.users = res.response
 
             if (this.users.length > 0) {
-                await this.getMessage(this.users[0].id)
+                this.selectedUser = this.users[0]
+                await this.getMessage(this.selectedUser.id)
+            } else {
+                this.isLoading = false
             }
         }
 
-        async send (id: number) {
-            await NotificationStore.sendMessage({message: this.message, receiver_id: id})
+        async send () {
+            if (!this.selectedUser) {
+                return
+            }
+            this.isSending = true
+            await NotificationStore.sendMessage({message: this.message, receiver_id: this.selectedUser.id})
+            await this.getMessage(this.selectedUser.id, true)
+            this.message = ''
+            this.isSending = false
         }
 
-        async getMessage (id: Number) {
+        async getMessage (id: Number, isBackGroundUpdate: boolean = false) {
+            this.isLoading = !isBackGroundUpdate
             const res = await NotificationStore.getMessage(id)
-            this.messages = res.response
+            this.messageGroups = res.response
+            this.isLoading = false
         }
 
         async selectUser (id: number) {
+            this.selectedUser = this.users.find(d => d.id === id) || null
             await this.getMessage(id)
         }
 
         get disabledSendBtn (): boolean {
-            return this.message === ''
+            return this.message === '' || this.isSending
         }
 
-        // TODO ここから メッセージを、ログインユーザーのものか、その他かでだしわけ
-        // get isLoginUser (): boolean {
-        //     return (message: IMessage) => {
-        //       return false
-        //     }
-        // }
+        get hasUser (): boolean {
+            return this.users.length > 0
+        }
     }
 </script>
 
 <style scoped lang="scss">
+  $message-box-height: 350px;
+
   .notification-box {
     display: flex;
     min-height: calc(100vh - #{$header-height} - #{$footer-height} - #{$size-l} * 2);
@@ -123,18 +157,31 @@
       padding: $size-m;
       cursor: pointer;
 
+      img {
+        opacity: 0.5;
+      }
+
       .side-nav-li-name {
         font-weight: bold;
         margin-left: $size-m;
+      }
+
+      &.is-active {
+        opacity: 1;
+        cursor: auto;
+
+        img {
+          opacity: 1;
+        }
       }
     }
   }
 
   .notification-box-content {
-    position: relative;
+    width: 100%;
 
     .message {
-      padding: $size-l;
+      padding: $size-l $size-l 0;
       display: flex;
       align-items: center;
 
@@ -146,25 +193,30 @@
       dd {
         background: #FFF;
         border: 1px solid $color-gray-thin1;
-        border-radius: 50px;
-        padding: $size-m;
+        border-radius: 20px;
+        padding: $size-s $size-m;
+      }
+
+      &.is-self {
+        dd {
+          margin-left: auto;
+          border: 1px solid $color-primary;
+        }
       }
     }
 
     .message-date {
       text-align: center;
       padding: $size-s;
-      background: $color-gray;
-      width: 150px;
-      margin: 0 auto;
-      border-radius: 50px;
-      margin-bottom: $size-l;
       color: $color-gray2;
     }
 
+    .notification-box-content-scroll-box {
+      height: calc(100vh - #{$message-box-height});
+      overflow: scroll;
+    }
+
     .message-textarea {
-      position: absolute;
-      bottom: 0;
       padding: $size-l $size-l 0 $size-l;
       width: 100%;
       border-top: 1px solid $color-gray-thin1;
@@ -181,5 +233,29 @@
         margin-top: $size-m;
       }
     }
+  }
+
+  .message-group {
+    margin-bottom: $size-l;
+  }
+
+  .spinner-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .spinner {
+      font-size: $size-xl;
+    }
+  }
+
+  .no-messages {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-16;
+    font-weight: bold;
   }
 </style>

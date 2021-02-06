@@ -1,7 +1,9 @@
 <template>
   <div class="user-card box-card">
     <div class="user-card-head">
-      <img class="thumbnail-s" :src="user.thumbnail">
+      <nuxt-link :to="userDetailPath">
+        <img class="thumbnail-s" :src="user.thumbnail">
+      </nuxt-link>
       <div class="user-card-head-content">
         <nuxt-link :to="userDetailPath">
           <h3 class="user-card-head-content-name">
@@ -20,14 +22,14 @@
       <dt>得意なこと</dt>
       <dd>{{ user.strong_description }}</dd>
       <dd class="mb-s">
-        <span class="tag-normal" v-for="strong in user.strong" :key="strong.id">{{ strong.name }}</span>
+        <span v-for="strong in user.strong" :key="strong.id" class="tag-normal">{{ strong.name }}</span>
       </dd>
     </dl>
     <dl class="user-card-info">
       <dt>学びたいコト</dt>
       <dd>{{ user.weak_description }}</dd>
       <dd class="mb-s">
-        <span class="tag-normal" v-for="weak in user.weak" :key="weak.id">{{ weak.name }}</span>
+        <span v-for="weak in user.weak" :key="weak.id" class="tag-normal">{{ weak.name }}</span>
       </dd>
     </dl>
   </div>

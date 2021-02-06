@@ -30,7 +30,7 @@
         components: {CommonTitle}
     })
     export default class MessageDialog extends Vue {
-        @Provide() private message: string
+        @Provide() private message: string = ''
         @Provide() private isLoading: boolean = false
 
         @Prop()

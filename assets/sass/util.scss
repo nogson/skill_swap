@@ -191,6 +191,12 @@
   height: $thumbnail-size-xs;
 }
 
+.thumbnail-xxs{
+  @extend .thumbnail-s;
+  width: $thumbnail-size-xxs;
+  height: $thumbnail-size-xxs;
+}
+
 .thumbnail-auto{
   border-radius: 100%;
   width: 100%;

@@ -29,4 +29,14 @@ export default class Skill extends VuexModule {
             return Promise.reject(error)
         }
     }
+
+    @Action
+    async requestPopularSkills ():Promise<any> {
+        try {
+            const res = await $axios.$get('api/popularSkills')
+            return res
+        } catch (error) {
+            return Promise.reject(error)
+        }
+    }
 }

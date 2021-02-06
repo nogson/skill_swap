@@ -11,8 +11,12 @@ export interface IMessage {
     'message_map_id': String,
     'receiver_id': String,
     'sender_id': String,
-    'sender_user': IUser
-    'receiver_user': IUser
+    'is_self': Boolean,
     'created_at': String,
     'updated_at': String,
+}
+
+export interface IMessageGroup {
+    messages: IMessage[],
+    date:String
 }

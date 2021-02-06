@@ -12,15 +12,18 @@
       <common-title klass="title-1">
         人気のスキル
       </common-title>
+      <popular-skills />
+    </article>
+    <article class="box-content">
       <common-title klass="title-1">
         カテゴリ別
       </common-title>
-      <article v-for="(category,$index) in categories" :key="$index" class="category-box">
+      <div v-for="(category,$index) in categories" :key="$index" class="category-box">
         <common-title klass="title-3">
           {{ category.name }}
         </common-title>
-        <skill-card :category="category" />
-      </article>
+        <skills :category="category" />
+      </div>
 
       <div class="cards">
         <div v-for="category in categories" :key="category.id" />
@@ -33,11 +36,11 @@
   import {Vue, Component} from 'nuxt-property-decorator'
   import {CategoryStore} from '@/store'
   import CommonTitle from '~/components/CommonTitle.vue'
-  import SkillCard from '~/components/SkillCard.vue'
+  import Skills from '~/components/Skills.vue'
 
   @Component({
     components: {
-      SkillCard,
+        Skills,
       CommonTitle
     },
     middleware: ['authenticated', 'common']
