@@ -2,8 +2,7 @@
   <header id="header">
     <h1 class="logo">
       <nuxt-link to="/">
-        Skill swap
-      </nuxt-link>
+        <img src="@/assets/images/logo.png"/></nuxt-link>
     </h1>
     <div v-if="!useSimple" class="header-items">
       <input class="header_search" type="text">
@@ -78,6 +77,12 @@
     background: #FFF;
     width: 100%;
     position: relative;
+
+    .logo{
+      img {
+        height: 20px;
+      }
+    }
 
     .header-items {
       display: flex;
