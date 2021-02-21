@@ -4,8 +4,8 @@
       <common-title>新規登録</common-title>
       <common-input-filed v-model="name" label="ユーザー名" />
       <common-input-filed v-model="email" label="メールアドレス" />
-      <common-input-filed v-model="password" label="パスワード" />
-      <common-input-filed v-model="passwordCheck" label="パスワード(確認用)" />
+      <common-input-filed v-model="password" label="パスワード" note="6文字以上" />
+      <common-input-filed v-model="passwordCheck" label="パスワード(確認用)" note="6文字以上" />
 
       <button class="button-primary-fill button-l mt-l" :disabled="disabledButton" @click="register">
         <font-awesome-icon v-if="isLoading" :icon="['fas','spinner']" spin class="spinner" />
@@ -58,7 +58,7 @@
     }
 
     get disabledButton (): boolean {
-      return this.isLoading || !this.password || !this.email
+      return this.isLoading || !this.name || !this.password || !this.email || !this.passwordCheck || this.passwordCheck !== this.password
     }
   }
 </script>

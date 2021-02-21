@@ -1,19 +1,12 @@
 <template>
   <div>
-    <div id="hero-img">
-      <h2>お互い得意なスキルを交換しあって、スキルアップを目指そう！</h2>
-      <div class="hero-img-wrap">
-        <img src="~/assets/images/chara/chara_1.png">
-        <img src="~/assets/images/swap.png" class="swap">
-        <img src="~/assets/images/chara/chara_2.png">
-      </div>
-    </div>
+    <hero-img />
     <article class="box-content">
       <common-title klass="title-1">
         KOOKAN-KOって何?
       </common-title>
       <div class="about-kookanko">
-        <p>KOOKAN-KO(コウカンコ)は、新しいスキルを学びたい人達をマッチングするサービスです。</p>
+        <p>KOOKAN-KO(コーカンコ)は、新しいスキルを学びたい人達をマッチングするサービスです。</p>
         <p>自分の得意なスキルを学びたいと思っている人が、自分に無いスキルを持っていることはよくあることです。<br>お互い得意分野を教え合い、さらなるスキルアップを目指すサービスです。</p>
       </div>
     </article>
@@ -83,9 +76,11 @@
   import {CategoryStore} from '@/store'
   import CommonTitle from '~/components/CommonTitle.vue'
   import Skills from '~/components/Skills.vue'
+  import HeroImg from '~/components/HeroImg.vue'
 
   @Component({
     components: {
+        HeroImg,
         Skills,
       CommonTitle
     },
@@ -100,33 +95,6 @@
 </script>
 
 <style scoped lang="scss">
-  #hero-img {
-    height: 400px;
-    padding: $size-xxl;
-    background: $color-primary;
-    margin-bottom: $size-xxl;
-
-    h2{
-      text-align: center;
-      color: $color-black;
-      margin-bottom: $size-xl;
-    }
-
-    .hero-img-wrap{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      >* {
-        height: 250px;
-      }
-      .swap {
-        width: 150px;
-        height: auto;
-        padding: 0 $size-xl;
-      }
-    }
-
-  }
   .about-kookanko{
     text-align: center;
     p{

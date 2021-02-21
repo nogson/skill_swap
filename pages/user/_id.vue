@@ -110,11 +110,20 @@
         }
 
         sendMessage () {
+            if (!this.userData) {
+                this.$router.push({path: '/login', query: {redirectId: this.$route.params.id}})
+                return
+            }
+
             this.enabledMassageDialog = true
         }
 
         get noRelatedUsers (): boolean {
             return !this.isLoading && (!this.relatedUsers || this.relatedUsers.length === 0)
+        }
+
+        get userData (): IUser {
+            return UserStore.getLoginUserData
         }
     }
 </script>

@@ -2,16 +2,20 @@
   <header id="header">
     <h1 class="logo">
       <nuxt-link to="/">
-        <img src="@/assets/images/logo.png"/></nuxt-link>
+        <img src="@/assets/images/logo.png">
+      </nuxt-link>
     </h1>
     <div v-if="!useSimple" class="header-items">
-      <input class="header_search" type="text">
+      <!-- <input class="header_search" type="text">-->
       <div v-if="userData" class="header-buttons is-login">
         <nuxt-link to="/notification">
           <font-awesome-icon :icon="['fas','bell']" class="icon" />
         </nuxt-link>
         <div class="my-navigation">
-          <img class="my-navigation-thumbnail thumbnail-xs" :src="thumbnail" @click="showMyNavigation">
+          <span v-if="isLoading" class="spinner">
+            <font-awesome-icon :icon="['fas','spinner']" spin />
+          </span>
+          <img v-else class="my-navigation-thumbnail thumbnail-xs" :src="thumbnail" @click="showMyNavigation">
           <nav v-if="displayNavigation" class="my-navigation-list">
             <ul @click="showMyNavigation">
               <li>
@@ -39,33 +43,37 @@
 </template>
 
 <script lang="ts">
-  import {Vue, Component, Prop} from 'nuxt-property-decorator'
-  import {IUser} from '@/utils/interface/user'
-  import {UserStore, AuthStore} from '@/store'
+    import {Vue, Component, Prop} from 'nuxt-property-decorator'
+    import {IUser} from '@/utils/interface/user'
+    import {UserStore, AuthStore} from '@/store'
+    import noIconImg from '@/assets/images/no_icon.png'
 
-  @Component
-  export default class CommonHeader extends Vue {
-    private displayNavigation: boolean = false
+    @Component
+    export default class CommonHeader extends Vue {
+        private displayNavigation: boolean = false
+        private isLoading: boolean = false
 
-    @Prop({default: false})
-    useSimple: boolean
+        @Prop({default: false})
+        useSimple: boolean
 
-    showMyNavigation () {
-      this.displayNavigation = !this.displayNavigation
+        showMyNavigation () {
+            this.displayNavigation = !this.displayNavigation
+        }
+
+        async logout () {
+            this.isLoading = true
+            await AuthStore.logout()
+            this.isLoading = false
+        }
+
+        get thumbnail (): String {
+            return this.userData.thumbnail ? this.userData.thumbnail : noIconImg
+        }
+
+        get userData (): IUser {
+            return UserStore.getLoginUserData
+        }
     }
-
-    logout () {
-      AuthStore.logout()
-    }
-
-    get thumbnail ():String {
-        return this.userData.thumbnail
-    }
-
-    get userData (): IUser {
-      return UserStore.getLoginUserData
-    }
-  }
 </script>
 
 <style scoped lang="scss">
@@ -78,7 +86,7 @@
     width: 100%;
     position: relative;
 
-    .logo{
+    .logo {
       img {
         height: 20px;
       }
@@ -115,6 +123,16 @@
 
       .my-navigation-thumbnail {
         cursor: pointer;
+      }
+
+      .spinner {
+        border: 1px solid $color-gray;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
       }
 
       .my-navigation-list {

@@ -7,6 +7,11 @@
       <button class="button-primary-fill button-l mt-l" :disabled="disabledButton" @click="login">
         <font-awesome-icon v-if="isLoading" :icon="['fas','spinner']" spin class="spinner" />ログイン
       </button>
+      <div class="mt-l">
+        <nuxt-link to="/register">
+          アカウントがない方はこちら
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
@@ -36,18 +41,19 @@
                     username: this.email
                 })
               await UserStore.requestLoginUserData()
-              this.$router.push('/')
+                if (this.$route.query.redirectId) {
+                    this.$router.push(`user/${this.$route.query.redirectId}`)
+                } else {
+                    this.$router.push('/')
+                }
             } catch (e) {
-                this.isLoading = false
                 this.$notify({
                     group: 'all',
                     type: 'error',
                     title: 'ログインに失敗しました',
                     text: 'メールアドレス、パスワードをご確認ください。'
                 })
-                return
             }
-
 
             this.isLoading = false
         }

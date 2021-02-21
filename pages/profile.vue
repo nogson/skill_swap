@@ -39,7 +39,7 @@
     import CommonInputFiled from '@/components/CommonInputFiled.vue'
     import Combobox from '@/components/Combobox.vue'
     import SelectCombobox from '~/components/SelectCombobox.vue'
-    import CategorySelectBox from "~/components/CategorySelectBox.vue"
+    import CategorySelectBox from '~/components/CategorySelectBox.vue'
 
     interface HTMLElementEvent<T extends HTMLElement> extends Event {
         target: T

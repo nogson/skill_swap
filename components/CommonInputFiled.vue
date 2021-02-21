@@ -1,7 +1,9 @@
 <template>
-  <label class="box-input">
-    <span class="label">{{ label }}</span><input :value="value" type="text" @input="input($event.target.value)">
-  </label>
+  <div class="mb-l">
+    <label class="box-input">
+      <span class="label">{{ label }}<span v-if="note" class="note"> {{ note }}</span></span><input :value="value" type="text" @input="input($event.target.value)">
+    </label>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,6 +17,9 @@
       @Prop()
       public value!: string;
 
+      @Prop()
+      public note!: string;
+
       @Emit()
       public input (value: string) {}
   }
@@ -24,14 +29,20 @@
 .box-input{
   display: flex;
   align-items: center;
-  margin-bottom: $size-l;
   .label {
     margin-right: $size-m;
-    min-width: 120px;
+    min-width: 140px;
     text-align: left;
   }
   input {
     width: 100%;
   }
+}
+
+.note {
+  font-size: $font-size-12;
+  color: $color-gray2;
+  text-align: left;
+  display: block;
 }
 </style>
