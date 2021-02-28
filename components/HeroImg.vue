@@ -1,12 +1,14 @@
 <template>
   <div id="hero-img">
-    <h2>お互い得意なスキルを交換しあって、スキルアップを目指そう！</h2>
+    <h2>得意なスキルを交換して、スキルアップを目指そう！</h2>
       <div class="hero-img-box">
         <img src="~/assets/images/chara/chara_1.png">
         <img src="~/assets/images/swap.png" class="swap">
         <img src="~/assets/images/chara/chara_2.png">
         <img src="~/assets/images/swap.png" class="swap">
-        <img src="~/assets/images/chara/chara_1.png">
+        <img src="~/assets/images/chara/chara_3.png">
+        <img src="~/assets/images/swap.png" class="swap">
+        <img src="~/assets/images/chara/chara_4.png">
       </div>
   </div>
 </template>

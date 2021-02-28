@@ -8,9 +8,6 @@
     <div v-if="!useSimple" class="header-items">
       <!-- <input class="header_search" type="text">-->
       <div v-if="userData" class="header-buttons is-login">
-        <nuxt-link to="/notification">
-          <font-awesome-icon :icon="['fas','bell']" class="icon" />
-        </nuxt-link>
         <div class="my-navigation">
           <span v-if="isLoading" class="spinner">
             <font-awesome-icon :icon="['fas','spinner']" spin />
@@ -29,6 +26,9 @@
             </ul>
           </nav>
         </div>
+        <nuxt-link to="/notification" :class="{'unread':unread}">
+          <font-awesome-icon :icon="['fas','bell']" class="icon" />
+        </nuxt-link>
       </div>
       <div v-else class="header-buttons">
         <nuxt-link to="/login">
@@ -45,7 +45,7 @@
 <script lang="ts">
     import {Vue, Component, Prop} from 'nuxt-property-decorator'
     import {IUser} from '@/utils/interface/user'
-    import {UserStore, AuthStore} from '@/store'
+    import {UserStore, AuthStore, NotificationStore} from '@/store'
     import noIconImg from '@/assets/images/no_icon.png'
 
     @Component
@@ -55,6 +55,10 @@
 
         @Prop({default: false})
         useSimple: boolean
+
+        async created () {
+         await NotificationStore.unread()
+        }
 
         showMyNavigation () {
             this.displayNavigation = !this.displayNavigation
@@ -72,6 +76,10 @@
 
         get userData (): IUser {
             return UserStore.getLoginUserData
+        }
+
+        get unread (): boolean {
+          return NotificationStore.getUnread
         }
     }
 </script>
@@ -110,6 +118,21 @@
         .icon {
           color: $color-black;
           font-size: $font-size-20;
+        }
+      }
+
+      .unread{
+        position: relative;
+        &::after{
+          content:"";
+          display: block;
+          background: $color-secondly;
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          top:-10px;
+          right: -10px;
+          border-radius: 100%;
         }
       }
     }
