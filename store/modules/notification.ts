@@ -12,8 +12,6 @@ export default class Notification extends VuexModule {
   private isUnread: boolean
 
   public get getUnread () {
-    console.log(this.isUnread)
-
     return this.isUnread
   }
 
@@ -34,22 +32,14 @@ export default class Notification extends VuexModule {
 
   @Action
   async getMessage (id: Number): Promise<any> {
-    try {
       const res = await $axios.$get(`api/getMessages/${id}`)
-      return Promise.resolve(res)
-    } catch (error) {
-      return Promise.reject(error)
-    }
+      return res
   }
 
   @Action
   async getUsers (): Promise<any> {
-    try {
       const res = await $axios.$get('api/getMessageUsers')
-      return Promise.resolve(res)
-    } catch (error) {
-      return Promise.reject(error)
-    }
+      return res
   }
 
   @Action
@@ -61,6 +51,11 @@ export default class Notification extends VuexModule {
     } catch (error) {
       handleError(error)
     }
+  }
+
+  @Action
+  async updateReadStatus (id: Number): Promise<any> {
+    await $axios.$put('api/updateReadStatus', {id})
   }
 }
 

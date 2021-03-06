@@ -43,45 +43,45 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Prop} from 'nuxt-property-decorator'
-    import {IUser} from '@/utils/interface/user'
-    import {UserStore, AuthStore, NotificationStore} from '@/store'
-    import noIconImg from '@/assets/images/no_icon.png'
+  import {Vue, Component, Prop} from 'nuxt-property-decorator'
+  import {IUser} from '@/utils/interface/user'
+  import {UserStore, AuthStore, NotificationStore} from '@/store'
+  import noIconImg from '@/assets/images/no_icon.png'
 
-    @Component
-    export default class CommonHeader extends Vue {
-        private displayNavigation: boolean = false
-        private isLoading: boolean = false
+  @Component
+  export default class CommonHeader extends Vue {
+    private displayNavigation: boolean = false
+    private isLoading: boolean = false
 
-        @Prop({default: false})
-        useSimple: boolean
+    @Prop({default: false})
+    useSimple: boolean
 
-        async created () {
-         await NotificationStore.unread()
-        }
-
-        showMyNavigation () {
-            this.displayNavigation = !this.displayNavigation
-        }
-
-        async logout () {
-            this.isLoading = true
-            await AuthStore.logout()
-            this.isLoading = false
-        }
-
-        get thumbnail (): String {
-            return this.userData.thumbnail ? this.userData.thumbnail : noIconImg
-        }
-
-        get userData (): IUser {
-            return UserStore.getLoginUserData
-        }
-
-        get unread (): boolean {
-          return NotificationStore.getUnread
-        }
+    async fetch () {
+     await NotificationStore.unread()
     }
+
+    showMyNavigation () {
+      this.displayNavigation = !this.displayNavigation
+    }
+
+    async logout () {
+      this.isLoading = true
+      await AuthStore.logout()
+      this.isLoading = false
+    }
+
+    get thumbnail (): String {
+      return this.userData.thumbnail ? this.userData.thumbnail : noIconImg
+    }
+
+    get userData (): IUser {
+      return UserStore.getLoginUserData
+    }
+
+    get unread (): boolean {
+      return NotificationStore.getUnread
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -121,16 +121,17 @@
         }
       }
 
-      .unread{
+      .unread {
         position: relative;
-        &::after{
-          content:"";
+
+        &::after {
+          content: "";
           display: block;
           background: $color-secondly;
           width: 10px;
           height: 10px;
           position: absolute;
-          top:-10px;
+          top: -10px;
           right: -10px;
           border-radius: 100%;
         }

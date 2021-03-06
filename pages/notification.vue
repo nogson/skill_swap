@@ -9,13 +9,13 @@
         <ul>
           <li
             v-for="user in users"
-            :key="user.id"
+            :key="user.data.id"
             class="side-nav-li"
-            :class="{'is-active':user.id === selectedUser.id}"
-            @click="selectUser(user.id)"
+            :class="{'is-active':selectedUser.data && user.data.id === selectedUser.data.id}"
+            @click="selectUser(user.data.id)"
           >
-            <img class="thumbnail-xs" :src="user.thumbnail">
-            <span class="side-nav-li-name">{{ user.name }}</span>
+            <span :class="{'unread':user.unread}"><img class="thumbnail-xs" :src="user.data.thumbnail"></span>
+            <span class="side-nav-li-name">{{ user.data.name }}</span>
           </li>
         </ul>
       </nav>
@@ -35,7 +35,7 @@
               :class="{'is-self':message.is_self}"
             >
               <dt v-if="!message.is_self">
-                <img class="thumbnail-xs" :src="selectedUser.thumbnail">
+                <img class="thumbnail-xs" :src="selectedUser.data.thumbnail">
               </dt>
               <dd>{{ message.message }}</dd>
             </dl>
@@ -57,67 +57,78 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Provide} from 'nuxt-property-decorator'
-    import {NotificationStore} from '@/store'
-    import {IUser} from '@/utils/interface/user'
-    import {IMessageGroup} from '@/utils/interface/notification'
-    import CommonTitle from '~/components/CommonTitle.vue'
+  import {Vue, Component, Provide} from 'nuxt-property-decorator'
+  import {NotificationStore} from '@/store'
+  import {IMessageUser} from '@/utils/interface/user'
+  import {IMessageGroup} from '@/utils/interface/notification'
+  import CommonTitle from '~/components/CommonTitle.vue'
 
-    @Component({
-        components: {CommonTitle},
-        middleware: ['authenticated', 'common']
-    })
-    export default class extends Vue {
-        @Provide() private message: string = ''
-        @Provide() private isLoading: boolean = true
-        @Provide() private isSending: boolean = false
-        @Provide() private users: IUser[] = []
-        @Provide() private messageGroups: IMessageGroup[] = []
-        @Provide() private selectedUser: IUser | null = null
+  @Component({
+    components: {CommonTitle},
+    middleware: ['authenticated', 'common']
+  })
+  export default class extends Vue {
+    @Provide() private message: string = ''
+    @Provide() private isLoading: boolean = true
+    @Provide() private isSending: boolean = false
+    @Provide() private users: IMessageUser[] = []
+    @Provide() private messageGroups: IMessageGroup[] = []
+    @Provide() private selectedUser: IMessageUser | null = null
 
-        async mounted () {
-            const res = await NotificationStore.getUsers()
-            this.users = res.response
+    async mounted () {
+      const res = await NotificationStore.getUsers()
+      this.users = res.response
 
-            if (this.users.length > 0) {
-                this.selectedUser = this.users[0]
-                await this.getMessage(this.selectedUser.id)
-            } else {
-                this.isLoading = false
-            }
-        }
-
-        async send () {
-            if (!this.selectedUser) {
-                return
-            }
-            this.isSending = true
-            await NotificationStore.sendMessage({message: this.message, receiver_id: this.selectedUser.id})
-            await this.getMessage(this.selectedUser.id, true)
-            this.message = ''
-            this.isSending = false
-        }
-
-        async getMessage (id: Number, isBackGroundUpdate: boolean = false) {
-            this.isLoading = !isBackGroundUpdate
-            const res = await NotificationStore.getMessage(id)
-            this.messageGroups = res.response
-            this.isLoading = false
-        }
-
-        async selectUser (id: number) {
-            this.selectedUser = this.users.find(d => d.id === id) || null
-            await this.getMessage(id)
-        }
-
-        get disabledSendBtn (): boolean {
-            return this.message === '' || this.isSending
-        }
-
-        get hasUser (): boolean {
-            return this.users.length > 0
-        }
+      if (this.users.length > 0) {
+        this.selectedUser = this.users[0]
+        this.updateUsers(this.selectedUser.data.id)
+        await this.getMessage(this.selectedUser.data.id)
+      } else {
+        this.isLoading = false
+      }
     }
+
+    async send () {
+      if (!this.selectedUser) {
+        return
+      }
+      this.isSending = true
+      await NotificationStore.sendMessage({message: this.message, receiver_id: this.selectedUser.data.id})
+      await this.getMessage(this.selectedUser.data.id, true)
+      this.message = ''
+      this.isSending = false
+    }
+
+    async getMessage (id: Number, isBackGroundUpdate: boolean = false) {
+      this.isLoading = !isBackGroundUpdate
+      const res = await NotificationStore.getMessage(id)
+      this.messageGroups = res.response
+      this.isLoading = false
+    }
+
+    async selectUser (id: number) {
+      this.selectedUser = this.users.find(d => d.data.id === id) || null
+      await NotificationStore.updateReadStatus(id)
+      this.updateUsers(id)
+      await this.getMessage(id)
+    }
+
+    updateUsers (id:Number) {
+      this.users.forEach((d) => {
+        if (d.data.id === id) {
+          d.unread = false
+        }
+      })
+    }
+
+    get disabledSendBtn (): boolean {
+      return this.message === '' || this.isSending
+    }
+
+    get hasUser (): boolean {
+      return this.users.length > 0
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -149,13 +160,29 @@
       }
     }
 
-    li {
+    .side-nav-li {
       display: flex;
       align-items: center;
       margin-bottom: $size-m;
       border-bottom: 1px solid $color-gray-thin1;
       padding: $size-m;
       cursor: pointer;
+
+      .unread {
+        position: relative;
+
+        &::after {
+          content: "";
+          display: block;
+          background: $color-secondly;
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          border-radius: 100%;
+        }
+      }
 
       img {
         opacity: 0.5;
