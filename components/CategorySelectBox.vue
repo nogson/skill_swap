@@ -10,14 +10,16 @@
         @change="change($event,$index)"
       />
       <div class="mb-l text-alg-right">
-        <button class="button-black-line button-s" @click="addSkill">追加</button>
+        <button class="button-black-line button-s" @click="addSkill">
+          追加
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Prop, PropSync, Provide} from 'nuxt-property-decorator'
+    import {Vue, Component, Prop, PropSync} from 'nuxt-property-decorator'
     import SelectCombobox from '~/components/SelectCombobox.vue'
 
     @Component({
@@ -36,7 +38,7 @@
             this.settingValues.splice(index, 1, id)
         }
 
-      addSkill() {
+      addSkill () {
         this.settingValues.push(0)
       }
     }

@@ -34,12 +34,8 @@ export default class User extends VuexModule {
 
   @Action
   async requestUserData (id:number): Promise<any> {
-    try {
       const res = await $axios.$get(`api/user/${id}`)
       return res
-    } catch (error) {
-      return Promise.reject(error)
-    }
   }
 
   @Action
@@ -52,7 +48,7 @@ export default class User extends VuexModule {
   }
 
   @Action
-  async requestUserDataBySkill (ids: number[]): Promise<any> {
+  async requestUserDataBySkill (ids:any): Promise<any> {
     try {
       const res = await $axios.$post('api/skills/users', ids)
       return res

@@ -46,7 +46,7 @@
   import {Vue, Component, Prop} from 'nuxt-property-decorator'
   import {IUser} from '@/utils/interface/user'
   import {UserStore, AuthStore, NotificationStore} from '@/store'
-  import noIconImg from '@/assets/images/no_icon.png'
+  import noIconImg from '~/assets/images/no_icon.png'
 
   @Component
   export default class CommonHeader extends Vue {

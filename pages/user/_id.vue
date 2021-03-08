@@ -98,6 +98,7 @@
             if (!this.user) {
                 return
             }
+
             const ids: number[] = this.user.strong.map(d => d.id)
 
             const skillUserRes = await UserStore.requestUserDataBySkill({ids})

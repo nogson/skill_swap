@@ -24,8 +24,7 @@
 </template>
 
 <script lang="ts">
-  import {Vue, Component, Prop, Provide} from 'nuxt-property-decorator'
-  import {CategoryStore} from '@/store'
+  import {Vue, Component, Prop} from 'nuxt-property-decorator'
   import {ISkill} from '@/utils/interface/skill'
 
   @Component

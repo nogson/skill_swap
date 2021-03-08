@@ -47,6 +47,7 @@
                     this.$router.push('/')
                 }
             } catch (e) {
+              // @ts-ignore
                 this.$notify({
                     group: 'all',
                     type: 'error',

@@ -1,36 +1,52 @@
 export interface IUser {
-    'id':Number,
-    'name':String,
+    'id':number,
+    'name':string,
     // 'email':String,
-    'profile':String,
-    'address':String,
-    'strong':String[],
-    'strong_description':String,
-    'weak':String[],
-    'weak_description':String,
-    'link':String,
-    'email_verified_at':Date,
-    'thumbnail':String,
-    'created_at':Date,
-    'updated_at':Date
+    'profile':string,
+    'address':string,
+    'strong':Strong[],
+    'strong_description':string,
+    'weak':Weak[],
+    'weak_description':string,
+    'link':string,
+    'email_verified_at':string,
+    'thumbnail':string,
+    'created_at':string,
+    'updated_at':string
 }
 
 export interface IMessageUser {
   data: {
-    'id':Number,
-    'name':String,
+    'id':number,
+    'name':string,
     // 'email':String,
-    'profile':String,
-    'address':String,
-    'strong':String[],
-    'strong_description':String,
-    'weak':String[],
-    'weak_description':String,
-    'link':String,
-    'email_verified_at':Date,
-    'thumbnail':String,
-    'created_at':Date,
-    'updated_at':Date
+    'profile':string,
+    'address':string,
+    'strong':number[],
+    'strong_description':string,
+    'weak':number[],
+    'weak_description':string,
+    'link':string,
+    'email_verified_at':string,
+    'thumbnail':string,
+    'created_at':string,
+    'updated_at':string
   },
-  unread :Boolean
+  unread :boolean
+}
+
+type Strong = {
+  'id':number,
+  'name':string,
+  'category_id':number,
+  'created_at':string,
+  'updated_at':string
+}
+
+type Weak = {
+  'id':number,
+  'name':string,
+  'category_id':number,
+  'created_at':string,
+  'updated_at':string
 }

@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Watch, Provide} from 'nuxt-property-decorator'
+    import {Vue, Component, Provide} from 'nuxt-property-decorator'
     import {UserStore} from '@/store'
     import {IProfile} from '@/utils/interface/profile'
     import CommonTitle from '@/components/CommonTitle.vue'
