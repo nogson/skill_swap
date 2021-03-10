@@ -28,7 +28,7 @@
         <dl>
           <dt>スキルの越境できる！</dt>
           <dd class="merit-image">
-            <img src="~/assets/images/chara/money.png">
+            <img src="~/assets/images/chara/chara_5.png">
           </dd>
           <dd>
             一人の力で他の分野を学ぶのは大変です。<br>
@@ -38,7 +38,7 @@
         <dl>
           <dt>仲間がみつかる！</dt>
           <dd class="merit-image">
-            <img src="~/assets/images/chara/money.png">
+            <img src="~/assets/images/chara/teams.png">
           </dd>
           <dd>
             同じ分野に興味がある仲間が見つかります。<br>
@@ -114,13 +114,16 @@
     }
     dd {
       margin-bottom: $size-m;
+      img{
+        height: 160px;
+        width: auto;
+      }
     }
 
     .merit-image {
       text-align: center;
       img{
         display: inline-block;
-        max-width: 120px;
       }
     }
   }
