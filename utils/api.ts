@@ -6,7 +6,7 @@ let $axios: NuxtAxiosInstance
 export function initializeAxios (axiosInstance: NuxtAxiosInstance): void {
     $axios = axiosInstance
 
-    $axios.defaults.baseURL = 'http://localhost'
+    $axios.defaults.baseURL = process.env.BASE_URL
     $axios.onRequest((config) => {
         const token:string | null = AuthStore.getToken
         if (token) {
