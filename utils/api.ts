@@ -6,7 +6,7 @@ let $axios: NuxtAxiosInstance
 export function initializeAxios (axiosInstance: NuxtAxiosInstance): void {
     $axios = axiosInstance
 
-    $axios.defaults.baseURL = process.env.BASE_URL
+    $axios.defaults.baseURL = 'https://kookanko-api.herokuapp.com/'
     $axios.onRequest((config) => {
         const token:string | null = AuthStore.getToken
         if (token) {
