@@ -2,7 +2,8 @@ require('dotenv').config()
 
 export default {
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost'
+    baseUrlBASE_URL: process.env.BASE_URL || 'http://localhost',
+    PASSWORD_GRANT: process.env.PASSWORD_GRANT || ''
   },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
