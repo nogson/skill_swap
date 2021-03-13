@@ -20,14 +20,9 @@ export default class Auth extends VuexModule {
   }
 
   @Action
-  async register (params: { name:string, password: string, email: string }): Promise<any> {
-    try {
-      const res = await $axios.$post('api/user', params)
-      this.setToken(res.access_token)
-      return Promise.resolve()
-    } catch (error) {
-      return Promise.reject(error)
-    }
+  async register (params: { name: string, password: string, email: string }): Promise<any> {
+    const res = await $axios.$post('api/user', params)
+    this.setToken(res.access_token)
   }
 
   @Action
@@ -39,23 +34,14 @@ export default class Auth extends VuexModule {
       scope: ''
     }
 
-    try {
-      const res = await $axios.$post('/oauth/token', Object.assign(param, params))
-      this.setToken(res.access_token)
-      return Promise.resolve()
-    } catch (e) {
-      return Promise.reject(e)
-    }
+    const res = await $axios.$post('/oauth/token', Object.assign(param, params))
+    this.setToken(res.access_token)
   }
 
   @Action
   async logout (): Promise<any> {
-    try {
-      await $axios.$post('api/user/logout')
-      UserStore.setUserData(null)
-      this.setToken(null)
-    } catch (error) {
-      return Promise.reject(error)
-    }
+    await $axios.$post('api/user/logout')
+    UserStore.setUserData(null)
+    this.setToken(null)
   }
 }
