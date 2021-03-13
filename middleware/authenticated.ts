@@ -4,8 +4,11 @@ import {AuthStore, UserStore} from '@/store'
 export default async function () {
     try {
        // console.log('AuthStore.getToken',AuthStore.getToken)
+      console.log(AuthStore.getToken)
         if (AuthStore.getToken) {
-            await UserStore.requestLoginUserData()
+          console.log('aaa')
+
+          await UserStore.requestLoginUserData()
         }
     } catch (e) {
         console.log(e)
